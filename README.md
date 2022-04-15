@@ -9,19 +9,19 @@ mentor:
 mentee:
 
 logics :
-->mentroing cycle : #total time   -> progress bar with starting time till current time
-knowing things the mentor starting time-date
-->Areas to develop (#total)
-name of area -> progress bar
-propozed(progress bar related with a rating for 10)
-->activities (#total)
-activite name
-->projects (#total)
-project name
-->live chat
-(1 crap is the video chat)
-messages (date - time)
-->meetings [add]
-2 tabs current past (using paganation)
-meeting name -> send feedback
+->mentroing cycle : #total time   -> progress bar with starting time till current time<br>
+knowing things the mentor starting time-date<br>
+->Areas to develop (#total)<br>
+name of area -> progress bar<br>
+propozed(progress bar related with a rating for 10)<br>
+->activities (#total)<br>
+activite name<br>
+->projects (#total)<br>
+project name<br>
+->live chat<br>
+(1 crap is the video chat)<br>
+messages (date - time)<br>
+->meetings [add]<br>
+2 tabs current past (using paganation)<br>
+meeting name -> send feedback<br>
   
