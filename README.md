@@ -24,3 +24,7 @@ messages (date - time)<br>
 ->meetings [add]<br>
 2 tabs current past (using paganation)<br>
 meeting name -> send feedback<br>
+
+
+This file might change in the current week
+
