@@ -28,4 +28,4 @@ meeting name -> send feedback<br>
 
 This file might change in the current week
 
-backend: Laravel Lumen + VueJs
+backend: Laravel + Laravel Octane + VueJs
