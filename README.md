@@ -3,29 +3,31 @@ Mentorship and Knowledge Exchange app
 <br>
 pages and what not ~
 
-current requirements :<br>
-mentor:
 
-mentee:
++areas to develop 
 
-logics :
-->mentroing cycle : #total time   -> progress bar with starting time till current time<br>
-knowing things the mentor starting time-date<br>
-->Areas to develop (#total)<br>
-name of area -> progress bar<br>
-propozed(progress bar related with a rating for 10)<br>
-->activities (#total)<br>
-activite name<br>
-->projects (#total)<br>
-project name<br>
-->live chat<br>
-(1 crap is the video chat)<br>
-messages (date - time)<br>
-->meetings [add]<br>
-2 tabs current past (using paganation)<br>
-meeting name -> send feedback<br>
++activities 
 
++meetings 
+→ requests from the mentee  
+   ⇒ table - meeting_requests
+      • meeting date
+      • meeting time
+      • name of the meeting 
+      • googemeeturl ()
+      • user_id
+   ⇒ table - meeting_request_feedbacks 
+   ⇒ user register type to get data from the database .
 
-This file might change in the current week
+   ⇒ table - mentor
+      • mentree_name
+      • mentree_address
+      • mentree_phone
+      • mentree_bio
+   ⇒ table - mentee
+      • mentee_name
+      • mentee_address
+      • mentee_phone
+      • mentee_bio
 
-backend: Laravel + Laravel Octane + VueJs
+backend: Laravel + Laravel Octane + VueJs +sqllight
