@@ -15,8 +15,10 @@ number of task from activites related to this area
 +activities 
 ⇒ table - activities
       • activitie_title
+      • activitie_description
       • activitie_related_area
       • activitie_priorities
+      • activitie_status
 +meetings 
    ⇒ action/logic
       • requests from the mentee.
