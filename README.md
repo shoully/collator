@@ -1,4 +1,4 @@
-# collator
+# Collator
 Mentorship and Knowledge Exchange app
 <br>
 pages and what not ~
@@ -41,5 +41,12 @@ number of task from activites related to this area
       • email
       • phone
       • bio
+
+table | mentee |
+--- | --- |
+name | ` message_text , message_from_whom , message_to_whom , message_room` |
+email | `user_id , user_name , user_type` |
+phone | `room_id , room_name , room_status, room_max , room_current_count` |
+bio | `room_id , room_name , room_status, room_max , room_current_count` |
 
 backend: Laravel + Laravel Octane + VueJs + SQLite
