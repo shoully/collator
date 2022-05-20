@@ -55,4 +55,6 @@ email | `Email of the mentee` |
 phone | `Phone of the mentee` |
 bio | `Bio of the mentee` |
 
-backend: Laravel + Laravel Octane + VueJs + SQLite
+```
+> Laravel + Laravel Octane + VueJs + SQLite
+```
