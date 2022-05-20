@@ -3,57 +3,56 @@ Mentorship and Knowledge Exchange app
 <br>
 pages and what not ~
 
-⇒ action/logic
-number of task from activites related to this area
-
+action/logic<br>
 +meetings 
-   ⇒ action/logic
-      • requests from the mentee.
-      • user register type to get data from the database.
+*requests from the mentee.
+*user register type to get data from the database.
++other
+*number of task from activites related to this area
 
 	
-table | developments |
+Table | Developments |
 --- | --- |
-id | ` id` |
-title | `title` |
-Completed_activities | `Completed_activities` |
-total_activities | `total_activities` |
+Id | ` id` |
+Title | `title` |
+Completed_Activities | `Completed activities` |
+Total_Activities | `total activities` |
 
 
-table | activities |
+Table | Activities |
 --- | --- |
-title | ` title` |
-description | `description` |
-development_id | `development_id` |
-priorities | `priorities` |
-status | `status` |
+Title | ` title` |
+Description | `description` |
+Development_id | `development id` |
+Priorities | `priorities` |
+Status | `status` |
 
-table | meeting_requests |
+Table | Meeting_Requests |
 --- | --- |
-date | ` Name of the mentor` |
-time | `(denied,Accept )` |
-title | `(denied,Accept )` |
-url | `(denied,Accept )` |
+Date | ` date` |
+Time | `time` |
+Title | `title` |
+Url | `url` |
 	
-table | meeting_request_feedbacks |
+Table | Meeting_Request_Feedbacks |
 --- | --- |
-id | ` table id` |
-text | `(denied,Accept )` |
+Id | ` table id` |
+Text | `feed back` |
 
 
-table | mentor |
+Table | Mentor |
 --- | --- |
-name | ` Name of the mentor` |
-email | `Email of the mentor` |
-phone | `Phone of the mentor` |
-bio | `Bio of the mentor` |
+Name | ` Name of the mentor` |
+Email | `Email of the mentor` |
+Phone | `Phone of the mentor` |
+Bio | `Bio of the mentor` |
 
-table | mentee |
+Table | Mentee |
 --- | --- |
 Name | ` Name of the mentee` |
-email | `Email of the mentee` |
-phone | `Phone of the mentee` |
-bio | `Bio of the mentee` |
+Email | `Email of the mentee` |
+Phone | `Phone of the mentee` |
+Bio | `Bio of the mentee` |
 
 ```
 > Laravel + Laravel Octane + VueJs + SQLite
