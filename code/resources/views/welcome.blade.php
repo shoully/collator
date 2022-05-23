@@ -1,3 +1,15 @@
+<script>
+function show_my_receipt() {
+
+
+         var page = 'http://www.test.com';
+         var myWindow = window.open(page, "_blank", "scrollbars=yes,width=400,height=500,top=300");
+
+
+         myWindow.focus();
+
+}
+</script>
   <!doctype html>
     <html lang="en">
     <head>
@@ -40,7 +52,7 @@
   <div class="card-header">
     Areas to Develop
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-  <button class="btn btn-primary me-md-2" type="button">Add Area to Develop</button>
+  <button class="btn btn-primary me-md-2" onclick="show_my_receipt()" type="button">Add Area to Develop</button>
 </div>
   </div>
   <ul class="list-group list-group-flush">
