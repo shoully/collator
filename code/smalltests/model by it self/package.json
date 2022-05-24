@@ -1,0 +1,34 @@
+{
+  "name": "bootstrap-show-modal",
+  "version": "3.0.4",
+  "description": "jQuery plugin to create bootstrap 4 modals in pure JavaScript",
+  "main": "src/bootstrap-show-modal.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shaack/bootstrap-show-modal.git"
+  },
+  "keywords": [
+    "Bootstrap",
+    "Bootstrap 4",
+    "jQuery",
+    "Html",
+    "Input",
+    "Modal",
+    "Dialog",
+    "UI",
+    "jquery-plugin"
+  ],
+  "author": "Stefan Haack <shaack@gmail.com> (https://shaack.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shaack/bootstrap-show-modal/issues"
+  },
+  "homepage": "https://github.com/shaack/bootstrap-show-modal",
+  "dependencies": {},
+  "devDependencies": {
+    "prismjs": "^1.25.0"
+  }
+}
