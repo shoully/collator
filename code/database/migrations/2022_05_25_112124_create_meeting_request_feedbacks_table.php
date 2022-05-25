@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('_activities', function (Blueprint $table) {
+        Schema::create('meeting_request_feedbacks', function (Blueprint $table) {
             $table->id();
+            $table->string('Date');
+            $table->string('Time');
             $table->string('Title');
-            $table->string('Description');
-            $table->string('Development_id');
-            $table->string('Priorities');
-            $table->string('Status');
+            $table->string('Url');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_activities');
+        Schema::dropIfExists('meeting_request_feedbacks');
     }
 };

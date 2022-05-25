@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*/Route::get('/', function () {
     return view('welcome');
 });
-
+/*/
+Route::get('/', 'App\Http\Controllers\HomeController@index');
 //5 buttoms
+Route::post('/newdevelopment', 'App\Http\Controllers\DevelopmentController@store');
+Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');

@@ -53,6 +53,14 @@
     <li class="list-group-item">Business Model <div class="progress">
   <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 </div></li>
+
+ @if (isset($developments))
+   @foreach ($developments as $development)
+    <li class="list-group-item"> {{ ucfirst($development->Title) }} <div class="progress">
+     <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+   </div></li>
+     @endforeach
+   @endif
   </ul>
 </div>
 <br>
@@ -114,6 +122,11 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item">First Meeting</li>
     <li class="list-group-item">Second Meeting</li>
+     @if (isset($meetingrequests))
+       @foreach ($meetingrequests as $meetingrequest)
+        <li class="list-group-item">{{ ucfirst($meetingrequest->Text) }}</li>
+         @endforeach
+       @endif
   </ul>
 </div>
           </div>
@@ -134,8 +147,10 @@
           <h2>Add Area to Develop</h2>
         </div>
         <div class="modal-body">
-          <form action = "test.html">
-         <input type = 'submit'>
+           <form class="form-horizontal" action="{{ url('/newdevelopment') }}" method="post" role="form">
+           <input type='text' class='form-control' placeholder='title' name='Title'>
+         <input value = "Add" type = 'submit' class="btn btn-primary">
+ {{ csrf_field() }}
          </form>
         </div>
         <div class="modal-footer">
@@ -210,9 +225,11 @@
           <h2>Meetings</h2>
         </div>
         <div class="modal-body">
-          <form action = "test.html">
-         <input type = 'submit'>
-         </form>
+        <form class="form-horizontal" action="{{ url('/newmeeting') }}" method="post" role="form">
+                  <input type='text' class='form-control' placeholder='title' name='Text'>
+                <input value = "Add" type = 'submit' class="btn btn-primary">
+        {{ csrf_field() }}
+                </form>
         </div>
         <div class="modal-footer">
           <h3>Modal Footer</h3>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Development extends Controller
+class ActivitieController extends Controller
 {
     //
 }

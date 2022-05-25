@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('_meeting__request__feedbacks', function (Blueprint $table) {
-            $table->id();
-            $table->string('Date');
-            $table->string('Time');
-            $table->string('Title');
-            $table->string('Url');
+        Schema::create('mentors', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('Name');
+            $table->string('Email');
+            $table->string('Phone');
+            $table->string('Bio');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_meeting__request__feedbacks');
+        Schema::dropIfExists('mentors');
     }
 };

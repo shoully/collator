@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class MeetingRequest extends Model
 {
     use HasFactory;
+    protected $table = 'meeting_requests';
 }
