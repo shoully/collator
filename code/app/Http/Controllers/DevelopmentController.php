@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+//models
 use App\Models\Development;
+use App\Models\MeetingRequest;
 
 class DevelopmentController extends Controller
 {
@@ -22,7 +23,9 @@ class DevelopmentController extends Controller
 
         $development->save();
         $development = Development::latest()->get();
-        return view('welcome', ['developments' => $development,]);
+         $meetingrequest = new MeetingRequest;
+          $meetingrequest = MeetingRequest::latest()->get();
+       return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,]);
     }
 
 }
