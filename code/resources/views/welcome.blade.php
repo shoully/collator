@@ -43,16 +43,7 @@
   <button id="BtnAreatoDevelop" class="btn btn-primary me-md-2" onclick="show_my_receipt()" type="button">Add Area to Develop</button>
 </div>
   </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Communication <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-</div></li>
-    <li class="list-group-item">Digital Marketing <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-</div></li>
-    <li class="list-group-item">Business Model <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-</div></li>
+
 
  @if (isset($developments))
    @foreach ($developments as $development)
@@ -120,8 +111,6 @@
 </div>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">First Meeting</li>
-    <li class="list-group-item">Second Meeting</li>
      @if (isset($meetingrequests))
        @foreach ($meetingrequests as $meetingrequest)
         <li class="list-group-item">{{ ucfirst($meetingrequest->Text) }}</li>
