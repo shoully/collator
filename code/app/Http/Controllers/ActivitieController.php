@@ -24,23 +24,36 @@ class ActivitieController extends Controller
         $activitie->Priorities = $request->Priorities;
         $activitie->Status = "New";
         $activitie->save();
-       
-        $activitie = Activitie::latest()->get();
 
         $development = new Development;
+        $development = Development::find($request->Development_id);
+        $development->Total_Activities += 1;
+
+        $development->save();
+
+        $activitie = Activitie::latest()->get();
+
+        
         $development = Development::latest()->get();
-         $meetingrequest = new MeetingRequest;
-          $meetingrequest = MeetingRequest::latest()->get();
+        $meetingrequest = new MeetingRequest;
+        $meetingrequest = MeetingRequest::latest()->get();
        return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
     }
     public function remove(Activitie $activitie)
     {
+        $development = new Development;
+        $development = Development::find( $activitie->Development_id);
+        //here added logic if the Activities is 
+        //not new then -1 to the (Completed_Activities) as well
+        $development->Total_Activities -= 1;
+        $development->save();
+
         $activitie->delete();
         $activitie = Activitie::latest()->get();
         $development = new Development;
         $development = Development::latest()->get();
-         $meetingrequest = new MeetingRequest;
-          $meetingrequest = MeetingRequest::latest()->get();
+        $meetingrequest = new MeetingRequest;
+        $meetingrequest = MeetingRequest::latest()->get();
        return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
     }
 }

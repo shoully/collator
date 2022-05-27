@@ -65,6 +65,8 @@ function Prioritiespill($whichone) {
                                                 @if (isset($developments)) @foreach ($developments as $development)
                                                 <li class="list-group-item">
                                                     {{ ucfirst($development->Title) }}
+                                                    {{ $development->Total_Activities }}
+                                                    
                                                     <div class="progress">
                                                         <div
                                                             class="progress-bar"
