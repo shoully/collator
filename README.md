@@ -25,7 +25,7 @@ Title | ` title` |
 Description | `description` |
 Development_id | `development id` |
 Priorities | `priorities` |
-Status | `status` |
+Status | `status (On track - on hold - done - ready - off trach - blocked)` |
 
 Table | Meeting_Requests |
 --- | --- |

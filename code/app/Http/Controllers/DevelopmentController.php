@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 //models
 use App\Models\Development;
 use App\Models\MeetingRequest;
-
+use App\Models\Activitie;
 class DevelopmentController extends Controller
 {
   public function store(Request $request)
@@ -22,10 +22,24 @@ class DevelopmentController extends Controller
         $development->Total_Activities = empty($request->Total_Activities) ? '0' : $request->Total_Activities;
 
         $development->save();
+        
         $development = Development::latest()->get();
          $meetingrequest = new MeetingRequest;
           $meetingrequest = MeetingRequest::latest()->get();
-       return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,]);
+          $activitie = new Activitie;
+          $activitie = Activitie::latest()->get();
+          
+          return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
+    }
+    public function remove(Development $development)
+    {
+        $development->delete();
+        $development = Development::latest()->get();
+        $meetingrequest = new MeetingRequest;
+         $meetingrequest = MeetingRequest::latest()->get();
+         $activitie = new Activitie;
+         $activitie = Activitie::latest()->get();
+         return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
     }
 
 }

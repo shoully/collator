@@ -20,4 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'App\Http\Controllers\HomeController@index');
 //5 buttoms
 Route::post('/newdevelopment', 'App\Http\Controllers\DevelopmentController@store');
+Route::delete('/newdevelopment/{development}', 'App\Http\Controllers\DevelopmentController@remove');
+
+
 Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');
+Route::delete('/newmeeting/{meetingrequest}', 'App\Http\Controllers\MeetingRequestController@remove');
+
+Route::post('/newactivity', 'App\Http\Controllers\ActivitieController@store');
+Route::delete('/newactivity/{activitie}', 'App\Http\Controllers\ActivitieController@remove');
