@@ -33,6 +33,7 @@ class DevelopmentController extends Controller
     }
     public function remove(Development $development)
     {
+      //check if there is related Activities
         $development->delete();
         $development = Development::latest()->get();
         $meetingrequest = new MeetingRequest;
