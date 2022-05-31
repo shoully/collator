@@ -22,7 +22,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('Phone');
             $table->string('Bio');
-            $table->string('usertype');
+            $table->string('type');
             $table->timestamps();
         });
     }

@@ -32,7 +32,7 @@
             </div>
 
             <div>
-                <x-label for="usertype" :value="__('usertype')" />
+                <x-label for="type" :value="__('type')" />
 
                 <x-input id="usertype" class="block mt-1 w-full" type="text" name="usertype" :value="old('usertype')" required autofocus />
             </div>
