@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->string('Title');
-            $table->string('Description');
-            $table->string('Development_id');
-            $table->string('Priorities');
-            $table->string('Status');
-            $table->string('Owner');
-            $table->string('Settowhom');
+            $table->string('title');
+            $table->string('description');
+            $table->string('mentoring_id');
+            $table->string('priority');
+            $table->string('status');
+            $table->string('mentor');
+            $table->string('mentee');
             $table->timestamps();
         });
     }

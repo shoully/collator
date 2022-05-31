@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('developments', function (Blueprint $table) {
+        Schema::create('mentoring', function (Blueprint $table) {
             $table->id();
-            $table->string('Title');
-            $table->string('Completed_Activities');
-            $table->string('Total_Activities');
-            $table->string('Owner');
-            $table->string('Settowhom');
+            $table->string('title');
+            $table->string('mentor');
+            $table->string('mentee');
             $table->timestamps();
         });
     }

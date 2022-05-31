@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('meeting_requests', function (Blueprint $table) {
+        Schema::create('meetings', function (Blueprint $table) {
             $table->id();
-            $table->string('Text');
-            $table->string('Owner');
-            $table->string('Settowhom');
+            $table->string('description');
+            $table->string('notes');
+            $table->string('date');
+            $table->string('URL');
+            $table->string('mentor');
+            $table->string('mentee');
             $table->timestamps();
         });
     }

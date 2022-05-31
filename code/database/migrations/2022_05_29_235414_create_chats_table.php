@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->string('message');
-            $table->string('Owner');
-            $table->string('Settowhom');
-            $table->string('Date_Timestamp');
+            $table->string('mentor');
+            $table->string('mentee');
             $table->timestamps();
         });
     }
