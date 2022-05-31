@@ -59,28 +59,35 @@ function Prioritiespill($whichone) {
                                 type="button">+</button>
                         </div>
 <ul class="list-group list-group-flush">
-                        @if (isset($developments)) @foreach ($developments as $development)
+                        @if (isset($developments)) 
+                        @foreach ($developments as $development)
                         <li class="list-group-item">
-                            {{ ucfirst($development->Title) }}
-                            {{ $development->Total_Activities }}
+                            {{ ($development->Title) }}
+                         
                         <form class="" action="{{ url('/newdevelopment', $development->id) }}" method="post">
                             <input type="submit" value="x" name="x" class="btn btn-danger float-end">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                         </form>
-
+                    
+                        
                         <div class="progress">
                             <div
                             class="progress-bar"
                             role="progressbar"
-                            style="width: 25%"
+                            style="width:{{ $calledper[$development->id] }}"
                             aria-valuenow="25"
                             aria-valuemin="0"
                             aria-valuemax="100"></div>
                         </div>
 
                     </li>
-                    @endforeach @endif
+                    @endforeach
+                  
+                     @endif
+                 
+                   
+                     
                 </ul>
 
             </div>
@@ -95,9 +102,17 @@ function Prioritiespill($whichone) {
                 <ul class="list-group list-group-flush">
                     @if (isset($activities)) @foreach ($activities as $activitie)
 
-                    <li class="list-group-item">{{ ucfirst($activitie->Title) }}
+                    <li class="list-group-item">{{ ($activitie->Title) }}
 
                         {{ Prioritiespill($activitie->Priorities) }}
+                        
+                        @if($activitie->Status != "Done")
+                        <form class="" action="{{ url('/newactivity', $activitie->id) }}" method="post">
+                        <input type="submit" value="Done" name="Done" class="btn btn-warning float-end">
+                        {{ method_field('put') }}
+                        {{ csrf_field() }}
+                    </form>
+                    @endif
                         <form class="" action="{{ url('/newactivity', $activitie->id) }}" method="post">
                         <input type="submit" value="x" name="x" class="btn btn-danger float-end">
                         {{ method_field('DELETE') }}
@@ -106,11 +121,10 @@ function Prioritiespill($whichone) {
                     </li>
 
                     @endforeach
+                    
                     @endif
 
-                    <li class="list-group-item">Test
-                        <span class="badge rounded-pill bg-success">New</span>
-                    </li>
+                  
                 </ul>
             </div>
             <br>

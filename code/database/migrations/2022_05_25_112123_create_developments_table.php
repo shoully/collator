@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('Title');
             $table->string('Completed_Activities');
             $table->string('Total_Activities');
+            $table->string('Owner');
+            $table->string('Settowhom');
             $table->timestamps();
         });
     }

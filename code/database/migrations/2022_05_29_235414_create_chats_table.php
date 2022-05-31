@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('message');
             $table->string('Owner');
+            $table->string('Settowhom');
             $table->string('Date_Timestamp');
             $table->timestamps();
         });

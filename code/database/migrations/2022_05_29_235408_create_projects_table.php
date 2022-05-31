@@ -17,7 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('Title');
             $table->string('Owner');
+            $table->string('Settowhom');
             $table->string('ProjectDate');
+            $table->string('desc');
+            $table->string('file');
+
             $table->timestamps();
         });
     }

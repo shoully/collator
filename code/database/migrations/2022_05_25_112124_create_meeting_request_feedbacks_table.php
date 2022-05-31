@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('Time');
             $table->string('Title');
             $table->string('Url');
+            $table->string('Owner');
+            $table->string('Settowhom');
             $table->timestamps();
         });
     }

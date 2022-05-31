@@ -40,7 +40,7 @@ Id | ` table id` |
 Text | `feed back` |
 
 
-Table | Mentor |
+Table | user |
 --- | --- |
 Name | ` Name of the mentor` |
 Email | `Email of the mentor` |
@@ -57,6 +57,8 @@ Bio | `Bio of the mentee` |
 Table | Project |
 --- | --- |
 Title| ` Name of the mentee` |
+desc
+file
 Owner | `Email of the mentee` |
 ProjectDate | `Phone of the mentee` |
 

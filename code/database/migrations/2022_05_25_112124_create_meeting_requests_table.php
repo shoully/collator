@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('meeting_requests', function (Blueprint $table) {
             $table->id();
-
             $table->string('Text');
+            $table->string('Owner');
+            $table->string('Settowhom');
             $table->timestamps();
         });
     }

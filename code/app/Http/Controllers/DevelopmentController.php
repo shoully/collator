@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 //models
 use App\Models\Development;
-use App\Models\MeetingRequest;
+
 use App\Models\Activitie;
 class DevelopmentController extends Controller
 {
@@ -22,25 +22,14 @@ class DevelopmentController extends Controller
         $development->Total_Activities = empty($request->Total_Activities) ? '0' : $request->Total_Activities;
 
         $development->save();
-        
-        $development = Development::latest()->get();
-         $meetingrequest = new MeetingRequest;
-          $meetingrequest = MeetingRequest::latest()->get();
-          $activitie = new Activitie;
-          $activitie = Activitie::latest()->get();
-          
-          return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
+          return redirect('/home');
     }
     public function remove(Development $development)
     {
-      //check if there is related Activities
+       Activitie::where('Development_id', $development->id)->delete();
+        //check if there is related Activities
         $development->delete();
-        $development = Development::latest()->get();
-        $meetingrequest = new MeetingRequest;
-         $meetingrequest = MeetingRequest::latest()->get();
-         $activitie = new Activitie;
-         $activitie = Activitie::latest()->get();
-         return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,]);
+         return redirect('/home');
     }
 
 }

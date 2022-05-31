@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('Development_id');
             $table->string('Priorities');
             $table->string('Status');
+            $table->string('Owner');
+            $table->string('Settowhom');
             $table->timestamps();
         });
     }

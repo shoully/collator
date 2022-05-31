@@ -30,8 +30,9 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-/*/
-Route::get('/', 'App\Http\Controllers\HomeController@index');
+
+//main welcome
+Route::get('/home', 'App\Http\Controllers\HomeController@index');
 //5 buttoms
 Route::post('/newdevelopment', 'App\Http\Controllers\DevelopmentController@store');
 Route::delete('/newdevelopment/{development}', 'App\Http\Controllers\DevelopmentController@remove');
@@ -42,4 +43,5 @@ Route::delete('/newmeeting/{meetingrequest}', 'App\Http\Controllers\MeetingReque
 
 Route::post('/newactivity', 'App\Http\Controllers\ActivitieController@store');
 Route::delete('/newactivity/{activitie}', 'App\Http\Controllers\ActivitieController@remove');
-/*/
+Route::put('/newactivity/{activitie}', 'App\Http\Controllers\ActivitieController@markdone');
+
