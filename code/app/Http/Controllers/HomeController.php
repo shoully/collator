@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 //models
-use App\Models\Development;
+use App\Models\Mentoring;
 use App\Models\MeetingRequest;
 use App\Models\Activitie;
 class HomeController extends Controller
@@ -12,14 +12,19 @@ class HomeController extends Controller
   public function index()
     {
       //called model data
-      $development = new Development;
-      $development = Development::latest()->get();
+     
+      $mentoring = new Mentoring;
+      $mentoring = Mentoring::latest()->get();
+   
+      /*/
       $meetingrequest = new MeetingRequest;
       $meetingrequest = MeetingRequest::latest()->get();
       $activitie = new Activitie;
       $activitie = Activitie::latest()->get();
-      
+       /*/
+
       //define onces
+      /*/
       $percentagearray = array();
       foreach ($development as $key => $value) {
         $completed = $value['Completed_Activities']; 
@@ -34,7 +39,8 @@ class HomeController extends Controller
       $theid = $value['id']; 
       $percentagearray[$theid]=$percentage;
     }
+    /*/
     
-    return view('welcome', ['meetingrequests' => $meetingrequest,'developments' => $development,'activities' => $activitie,'calledper' =>$percentagearray,]);
+    return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,]);
       }
 }

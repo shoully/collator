@@ -11,6 +11,8 @@ const form = useForm({
     email: '',
     password: '',
     type: '',
+    phone: '',
+    bio: '',
     password_confirmation: '',
     terms: false,
 });
@@ -31,28 +33,44 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <BreezeLabel for="name" value="Name" />
-                <BreezeInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
+                <BreezeInput name ="name" id="name" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
             </div>
 
             <div class="mt-4">
                 <BreezeLabel for="email" value="Email" />
-                <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="username" />
+                <BreezeInput name ="email" id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autocomplete="Email" />
             </div>
-
+  
             <div class="mt-4">
                 <BreezeLabel for="type" value="Type" />
-                <BreezeInput id="type" type="type" class="mt-1 block w-full" v-model="form.type" required autocomplete="type" />
+                <select name ="type" class="mt-1 block w-full" v-model="form.type"  type="select" id="type" required autocomplete="type"> 
+                <option value="">Please Select Type</option>
+                <option>Mentor</option> 
+                <option>Mentee</option> 
+                </select>
             </div>
+
+             <div class="mt-4">
+                <BreezeLabel for="phone" value="Phone" />
+                <BreezeInput name ="phone" id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required autocomplete="phone" />
+            </div>
+
+             <div class="mt-4">
+                <BreezeLabel for="bio" value="Bio" />
+                <BreezeInput name ="bio" id="bio" type="text" class="mt-1 block w-full" v-model="form.bio" required autocomplete="bio" />
+            </div>
+
 
             <div class="mt-4">
                 <BreezeLabel for="password" value="Password" />
-                <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
+                <BreezeInput name ="password" id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
             </div>
 
             <div class="mt-4">
                 <BreezeLabel for="password_confirmation" value="Confirm Password" />
-                <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
+                <BreezeInput name ="password_confirmation" id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
+
 
             <div class="flex items-center justify-end mt-4">
                 <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">

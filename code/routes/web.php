@@ -24,18 +24,27 @@ Route::get('/', function () {
     ]);
 });
 
+//Mentee
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+//Mentor
+Route::get('/dashboard2', 'App\Http\Controllers\HomeController@index');
 
+
+require __DIR__.'/auth.php';
 
 //main welcome
 Route::get('/home', 'App\Http\Controllers\HomeController@index');
+//main 2 welcome
+Route::get('/home2', 'App\Http\Controllers\HomeController@index');
+
+
+
 //5 buttoms
-Route::post('/newdevelopment', 'App\Http\Controllers\DevelopmentController@store');
-Route::delete('/newdevelopment/{development}', 'App\Http\Controllers\DevelopmentController@remove');
+Route::post('/newmentoring', 'App\Http\Controllers\MentoringController@store');
+Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringController@remove');
 
 
 Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');

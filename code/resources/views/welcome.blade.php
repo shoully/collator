@@ -59,12 +59,12 @@ function Prioritiespill($whichone) {
                                 type="button">+</button>
                         </div>
 <ul class="list-group list-group-flush">
-                        @if (isset($developments)) 
-                        @foreach ($developments as $development)
+                        @if (isset($mentorings)) 
+                        @foreach ($mentorings as $mentoring)
                         <li class="list-group-item">
-                            {{ ($development->Title) }}
+                            {{ ($mentoring->title) }}
                          
-                        <form class="" action="{{ url('/newdevelopment', $development->id) }}" method="post">
+                        <form class="" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
                             <input type="submit" value="x" name="x" class="btn btn-danger float-end">
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
@@ -75,7 +75,7 @@ function Prioritiespill($whichone) {
                             <div
                             class="progress-bar"
                             role="progressbar"
-                            style="width:{{ $calledper[$development->id] }}"
+                            style="width:0%"
                             aria-valuenow="25"
                             aria-valuemin="0"
                             aria-valuemax="100"></div>
@@ -197,10 +197,10 @@ function Prioritiespill($whichone) {
         <div class="modal-body">
             <form
             class="form-horizontal"
-            action="{{ url('/newdevelopment') }}"
+            action="{{ url('/newmentoring') }}"
             method="post"
             role="form">
-            <input type='text' class='form-control' placeholder='title' name='Title'>
+            <input type='text' class='form-control' placeholder='title' name='title'>
             <input value="Add" type='submit' class="btn btn-primary">
             {{ csrf_field() }}
         </form>
@@ -228,10 +228,10 @@ function Prioritiespill($whichone) {
             <input type='text' class='form-control' placeholder='Title' name='Title'>
             <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
 
-            @if (isset($developments))
-            <select name='Development_id' class="form-control">
-                @foreach ($developments as $development)
-                <option value="{{$development->id}}">{{ ucfirst($development->Title) }}</option>
+            @if (isset($mentorings))
+            <select name='mentoring_id' class="form-control">
+                @foreach ($mentorings as $mentoring)
+                <option value="{{$mentoring->id}}">{{ ucfirst($mentoring->Title) }}</option>
                 @endforeach
             </select>
             @endif
