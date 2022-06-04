@@ -40,11 +40,6 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-       $user = Auth::user();
-        $usertype = $user->type;
-        if ($usertype == "Mentor")
-            return redirect()->intended(RouteServiceProvider::HOME2);
-        if ($usertype == "Mentee")
-            return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

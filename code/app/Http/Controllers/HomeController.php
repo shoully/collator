@@ -43,11 +43,4 @@ class HomeController extends Controller
     
     return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,]);
       }
-	  
-	  public function listoffollow()
-    {
-      
-      
-    return view('run');
-      }
 }

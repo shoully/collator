@@ -24,16 +24,12 @@ Route::get('/', function () {
     ]);
 });
 
-
 //Mentee
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//Mentr
-
-//Route::get('/dashboard', 'App\Http\Controllers\HomeController@listoffollow');
+//Mentor
 Route::get('/dashboard2', 'App\Http\Controllers\HomeController@index');
 
 
