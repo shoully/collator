@@ -4,6 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,15 +26,24 @@ Route::get('/', function () {
     ]);
 });
 
-//Mentee
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-//Mentor
-Route::get('/dashboard2', 'App\Http\Controllers\HomeController@index');
 
 
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+
+    Route::get("/redirectAuthenticatedUsers", [RedirectAuthenticatedUsersController::class, "home"]);
+
+    Route::group(['middleware' => 'checkRole:Mentor'], function() {
+        Route::inertia('/adminDashboard', 'AdminDashboard')->name('adminDashboard');
+    });
+    Route::group(['middleware' => 'checkRole:Mentee'], function() {
+        Route::inertia('/userDashboard', 'UserDashboard')->name('userDashboard');
+    });
+    Route::group(['middleware' => 'checkRole:guest'], function() {
+        Route::inertia('/guestDashboard', 'GuestDashboard')->name('guestDashboard');
+    });
+});
 require __DIR__.'/auth.php';
 
 //main welcome
@@ -40,7 +51,7 @@ Route::get('/home', 'App\Http\Controllers\HomeController@index');
 //main 2 welcome
 Route::get('/home2', 'App\Http\Controllers\HomeController@index');
 
-
+ 
 
 //5 buttoms
 Route::post('/newmentoring', 'App\Http\Controllers\MentoringController@store');

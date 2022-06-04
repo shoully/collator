@@ -41,17 +41,18 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-      /*/
+   
+        /*/
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'Phone' => $request->Phone,
-            'Bio' => $request->Bio,
-            'Type' => $request->Type,
+            'phone' => $request->phone,
+            'bio' => $request->bio,
+            'type' => $request->type,
             'password' => Hash::make($request->password),
         ]);
-/*/
 
+/*/
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
@@ -64,13 +65,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        $usertype = $user->type;
-        if ($usertype == "Mentor")
-            return redirect(RouteServiceProvider::HOME2);
-        if ($usertype == "Mentee")
-            return redirect(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
        
     }
 }
