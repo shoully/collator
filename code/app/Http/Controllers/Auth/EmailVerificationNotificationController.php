@@ -17,6 +17,11 @@ class EmailVerificationNotificationController extends Controller
     public function store(Request $request)
     {
         if ($request->user()->hasVerifiedEmail()) {
+           $user = Auth::user();
+        $usertype = $user->type;
+        if ($usertype == "Mentor")
+            return redirect()->intended(RouteServiceProvider::HOME2);
+        if ($usertype == "Mentee")
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
