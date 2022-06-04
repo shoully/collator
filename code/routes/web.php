@@ -15,6 +15,7 @@ use Inertia\Inertia;
 |
 */
 
+/*/
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -23,9 +24,20 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
+/*/
 
 //Mentee
+//Route::get('/', 'Welcome');
+
+
+
+Route::view('/', 'auth.login');
+Route::view('/register', 'auth.register');
+
+
+
+
+//AuthController
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
