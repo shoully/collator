@@ -46,12 +46,12 @@ Route::group(['middleware' => 'auth'], function() {
 });
 require __DIR__.'/auth.php';
 
-//main welcome
+//main welcome Mentee
 Route::get('/home', 'App\Http\Controllers\HomeController@index');
-//main 2 welcome
+//main 2 welcome Mentor
 Route::get('/home2', 'App\Http\Controllers\HomeController@listofuser');
 
-//click follow
+//Mentor click follow
 Route::post('/homefollow/{user}', 'App\Http\Controllers\HomeController@fromlistofuser');
  
 

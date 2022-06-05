@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 //models
 use App\Models\Mentoring;
 use App\Models\MeetingRequest;
@@ -46,16 +47,17 @@ class HomeController extends Controller
       {
         $user = new User;
         $user = User::where('type' , '=', "Mentee")->get();
-      
         return view('welcometoclient', ['users' => $user,]);
         }
         public function fromlistofuser(User $user)
         {
-          //called model data
-         
+          $mentee = $user;
+          $userloginedin = Auth::user();
+          
+     
           $mentoring = new Mentoring;
           $mentoring = Mentoring::where('mentee' , '=', $user->id)->get();
 
-        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,]);
+          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
           }
 }

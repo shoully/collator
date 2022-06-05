@@ -23,14 +23,15 @@ function Prioritiespill($whichone) {
         <div class="container">
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
-                    Mentor
+                    Mentor()
                 </div>
                 <div class="col-md-auto">
                     =
                 </div>
                 <div class="col-md-auto">
-                    Mentee
+                    Mentee({{ $mentee->name }})
                 </div>
+                
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
@@ -47,16 +48,27 @@ function Prioritiespill($whichone) {
                 </div>
             </div>
             <br>
+
             <div class="row justify-content-md-center">
                 <div class="col-md-auto">
                     <div class="card" style="width: 18rem;">
                         <div class="card-header">
                             Areas to Develop
+                            @if ($currentuser->type == "Mentor")
                                 <button
                                 id="BtnAreatoDevelop"
                                 class="btn btn-primary float-end"
                                 onclick="show_my_receipt()"
                                 type="button">+</button>
+                                @else
+                                <button
+                                id="BtnAreatoDevelop"
+                                class="btn btn-primary float-end"
+                                onclick="show_my_receipt()"
+                                disabled
+                                type="button">+</button>
+                                @endif
+
                         </div>
 <ul class="list-group list-group-flush">
                         @if (isset($mentorings)) 
@@ -65,7 +77,10 @@ function Prioritiespill($whichone) {
                             {{ ($mentoring->title) }}
                          
                         <form class="" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
+                        <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
                             <input type="submit" value="x" name="x" class="btn btn-danger float-end">
+                            
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                         </form>
@@ -95,8 +110,11 @@ function Prioritiespill($whichone) {
             <div class="card" style="width: 18rem;">
                 <div class="card-header">
                     Tasks
-
+                    @if ($currentuser->type == "Mentor")
                         <button id="BtnAddActivity" class="btn btn-primary float-end" type="button">+</button>
+                        @else
+                        <button id="BtnAddActivity" disabled class="btn btn-primary float-end" type="button">+</button>
+                    @endif
 
                 </div>
                 <ul class="list-group list-group-flush">
@@ -202,6 +220,8 @@ function Prioritiespill($whichone) {
             role="form">
             <input type='text' class='form-control' placeholder='title' name='title'>
             <input value="Add" type='submit' class="btn btn-primary">
+            <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
             {{ csrf_field() }}
         </form>
     </div>
