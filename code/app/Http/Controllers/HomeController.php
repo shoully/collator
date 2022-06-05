@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Mentoring;
 use App\Models\MeetingRequest;
 use App\Models\Activitie;
+use App\Models\User;
 class HomeController extends Controller
 {
   public function index()
     {
-      //called model data
-     
       $mentoring = new Mentoring;
       $mentoring = Mentoring::latest()->get();
    
@@ -43,4 +42,20 @@ class HomeController extends Controller
     
     return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,]);
       }
+      public function listofuser()
+      {
+        $user = new User;
+        $user = User::where('type' , '=', "Mentee")->get();
+      
+        return view('welcometoclient', ['users' => $user,]);
+        }
+        public function fromlistofuser(User $user)
+        {
+          //called model data
+         
+          $mentoring = new Mentoring;
+          $mentoring = Mentoring::where('mentee' , '=', $user->id)->get();
+
+        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,]);
+          }
 }

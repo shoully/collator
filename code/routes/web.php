@@ -49,8 +49,10 @@ require __DIR__.'/auth.php';
 //main welcome
 Route::get('/home', 'App\Http\Controllers\HomeController@index');
 //main 2 welcome
-Route::get('/home2', 'App\Http\Controllers\HomeController@index');
+Route::get('/home2', 'App\Http\Controllers\HomeController@listofuser');
 
+//click follow
+Route::post('/homefollow/{user}', 'App\Http\Controllers\HomeController@fromlistofuser');
  
 
 //5 buttoms
@@ -61,7 +63,7 @@ Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringContro
 Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');
 Route::delete('/newmeeting/{meetingrequest}', 'App\Http\Controllers\MeetingRequestController@remove');
 
-Route::post('/newactivity', 'App\Http\Controllers\ActivitieController@store');
-Route::delete('/newactivity/{activitie}', 'App\Http\Controllers\ActivitieController@remove');
-Route::put('/newactivity/{activitie}', 'App\Http\Controllers\ActivitieController@markdone');
+Route::post('/newactivity', 'App\Http\Controllers\TaskController@store');
+Route::delete('/newactivity/{activitie}', 'App\Http\Controllers\TaskController@remove');
+Route::put('/newactivity/{activitie}', 'App\Http\Controllers\TaskController@markdone');
 

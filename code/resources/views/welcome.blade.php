@@ -94,7 +94,7 @@ function Prioritiespill($whichone) {
             <br>
             <div class="card" style="width: 18rem;">
                 <div class="card-header">
-                    Activities
+                    Tasks
 
                         <button id="BtnAddActivity" class="btn btn-primary float-end" type="button">+</button>
 
@@ -130,7 +130,7 @@ function Prioritiespill($whichone) {
             <br>
             <div class="card" style="width: 18rem;">
                 <div class="card-header">
-                    Projects
+                    Documents
 
                         <button id="BtnAddProject" class="btn btn-primary float-end" type="button">+</button>
 
