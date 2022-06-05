@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 //models
 use App\Models\Mentoring;
-use App\Models\Activitie;
+use App\Models\Task;
 use App\Models\User;
 class MentoringController extends Controller
 {
@@ -24,7 +24,8 @@ class MentoringController extends Controller
        
         $mentoring->save();
 
-         
+        $task = new Task;
+        $task = Task::where('mentee' , '=', $request->mentee)->get();
         $menteefind = new User;
         $menteefind = User::where('id' , '=', $request->mentee)->take(1)->get();
         $mentee = $menteefind[0];
@@ -33,12 +34,12 @@ class MentoringController extends Controller
         $mentoring = new Mentoring;
         $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
 
-          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'activities' => $mentoring,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
           //return redirect('/home');
     }
     public function remove(Mentoring $mentoring,Request $request)
     {
-      // Activitie::where('mentoring_id', $mentoring->id)->delete();
+        Task::where('mentoring_id', $mentoring->id)->delete();
         //check if there is related Activities
         $mentoring->delete();
 

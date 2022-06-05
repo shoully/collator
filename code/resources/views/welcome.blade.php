@@ -118,20 +118,24 @@ function Prioritiespill($whichone) {
 
                 </div>
                 <ul class="list-group list-group-flush">
-                    @if (isset($activities)) @foreach ($activities as $activitie)
+                    @if (isset($tasks)) @foreach ($tasks as $task)
 
-                    <li class="list-group-item">{{ ($activitie->Title) }}
+                    <li class="list-group-item">{{ ($task->title) }}
 
-                        {{ Prioritiespill($activitie->Priorities) }}
+                        {{ Prioritiespill($task->priority) }}
                         
-                        @if($activitie->Status != "Done")
-                        <form class="" action="{{ url('/newactivity', $activitie->id) }}" method="post">
+                        @if($task->Status != "Done")
+                        <form class="" action="{{ url('/newtask', $task->id) }}" method="post">
+                        <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+                         <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
                         <input type="submit" value="Done" name="Done" class="btn btn-warning float-end">
                         {{ method_field('put') }}
                         {{ csrf_field() }}
                     </form>
                     @endif
-                        <form class="" action="{{ url('/newactivity', $activitie->id) }}" method="post">
+                        <form class="" action="{{ url('/newtask', $task->id) }}" method="post">
+                        <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+                    <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
                         <input type="submit" value="x" name="x" class="btn btn-danger float-end">
                         {{ method_field('DELETE') }}
                         {{ csrf_field() }}
@@ -237,29 +241,31 @@ function Prioritiespill($whichone) {
     <div class="modal-content">
         <div class="modal-header">
 
-            <h2>Add Activity</h2>
+            <h2>Add Task</h2>
         </div>
         <div class="modal-body">
             <form
             class="form-horizontal"
-            action="{{ url('/newactivity') }}"
+            action="{{ url('/newtask') }}"
             method="post"
             role="form">
-            <input type='text' class='form-control' placeholder='Title' name='Title'>
+            <input type='text' class='form-control' placeholder='Title' name='title'>
             <textarea class="form-control" id="Description" name="Description" rows="3"></textarea>
 
             @if (isset($mentorings))
             <select name='mentoring_id' class="form-control">
                 @foreach ($mentorings as $mentoring)
-                <option value="{{$mentoring->id}}">{{ ucfirst($mentoring->Title) }}</option>
+                <option value="{{$mentoring->id}}">{{ ucfirst($mentoring->title) }}</option>
                 @endforeach
             </select>
             @endif
-            <select class="form-control" name='Priorities'>
+            <select class="form-control" name='priority'>
                 <option>High</option>
                 <option>Medium</option>
                 <option>Low</option>
             </select>
+            <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
             <input type='submit'>
             {{ csrf_field() }}
         </form>
@@ -276,7 +282,7 @@ function Prioritiespill($whichone) {
     <div class="modal-content">
         <div class="modal-header">
 
-            <h2>Adding Project</h2>
+            <h2>Adding Document</h2>
         </div>
         <div class="modal-body">
             <form action="test.html">

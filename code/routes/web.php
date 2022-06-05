@@ -63,7 +63,7 @@ Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringContro
 Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');
 Route::delete('/newmeeting/{meetingrequest}', 'App\Http\Controllers\MeetingRequestController@remove');
 
-Route::post('/newactivity', 'App\Http\Controllers\TaskController@store');
-Route::delete('/newactivity/{activitie}', 'App\Http\Controllers\TaskController@remove');
-Route::put('/newactivity/{activitie}', 'App\Http\Controllers\TaskController@markdone');
+Route::post('/newtask', 'App\Http\Controllers\TaskController@store');
+Route::delete('/newtask/{task}', 'App\Http\Controllers\TaskController@remove');
+Route::put('/newtask/{task}', 'App\Http\Controllers\TaskController@markdone');
 
