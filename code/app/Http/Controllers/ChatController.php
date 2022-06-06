@@ -29,9 +29,18 @@ class ChatController extends Controller
         
         $userloginedin = Auth::user();
         $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
+        if ($request->mentor == $request->mentee)
+        {
+            $chatmentee = Chat::where('mentee' , '=', $userloginedin->id)->where('mentor' , '=',  $userloginedin->id)->get();
+            $chattomentee = Chat::where('mentee' , '=', $userloginedin->id)->where('mentor' , '!=',  $userloginedin->id)->get();
+        }
+        else
+        {
+            $chatmentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '=',  $request->mentee)->get();
+            $chattomentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '!=',  $request->mentee)->get();
+        }
         
-        $chatmentee = Chat::where('mentee' , '=', $userloginedin->id)->where('mentor' , '=',  $userloginedin->id)->get();
-        $chattomentee = Chat::where('mentee' , '=', $userloginedin->id)->where('mentor' , '!=',  $userloginedin->id)->get();
+        
         $allchat1 = array();
         $allchat2 = array();
         $allchat = array();

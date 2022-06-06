@@ -171,6 +171,7 @@ function Prioritiespill($whichone) {
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Chat Box
+                    @if (isset($chats))
                     @foreach ($chats as $chat )
                  
                    @if ($chat->mentee != $chat->mentor)
@@ -184,7 +185,7 @@ function Prioritiespill($whichone) {
                           </div>
                           
                 @endforeach
-               
+                @endif
                 
                       
                     </li>

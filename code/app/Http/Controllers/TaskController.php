@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Mentoring;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Chat;
 class TaskController extends Controller
 {
     public function store(Request $request)
@@ -33,7 +34,17 @@ class TaskController extends Controller
         $mentoring = new Mentoring;
         $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
         
-        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+        $chatmentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '=',  $request->mentee)->get();
+          $chattomentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '!=',  $request->mentee)->get();
+          $allchat1 = array();
+          $allchat2 = array();
+          $allchat = array();
+          foreach ($chatmentee as $key => $value) $allchat1[$key] = $value;
+          foreach ($chattomentee as $key => $value) $allchat2[$key] = $value;
+          $allchat = array_merge($allchat1, $allchat2);
+          arsort($allchat);
+
+          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,]);
 /*/
         $development = new Development;
         $development = Development::find($request->Development_id);
@@ -64,7 +75,17 @@ class TaskController extends Controller
         $mentoring = new Mentoring;
         $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
         
-        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+        $chatmentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '=',  $request->mentee)->get();
+        $chattomentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '!=',  $request->mentee)->get();
+        $allchat1 = array();
+        $allchat2 = array();
+        $allchat = array();
+        foreach ($chatmentee as $key => $value) $allchat1[$key] = $value;
+        foreach ($chattomentee as $key => $value) $allchat2[$key] = $value;
+        $allchat = array_merge($allchat1, $allchat2);
+        arsort($allchat);
+
+        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,]);
        //return redirect('/home');
     }
     public function markdone(Task $task,Request $request)
@@ -81,7 +102,7 @@ class TaskController extends Controller
         $task->save();
 
 
-        $task = new Task;
+        
         $task = Task::where('mentee' , '=', $request->mentee)->get();
         $menteefind = new User;
         $menteefind = User::where('id' , '=', $request->mentee)->take(1)->get();
@@ -91,7 +112,17 @@ class TaskController extends Controller
         $mentoring = new Mentoring;
         $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
         
-        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+        $chatmentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '=',  $request->mentee)->get();
+          $chattomentee = Chat::where('mentee' , '=', $request->mentee)->where('mentor' , '!=',  $request->mentee)->get();
+          $allchat1 = array();
+          $allchat2 = array();
+          $allchat = array();
+          foreach ($chatmentee as $key => $value) $allchat1[$key] = $value;
+          foreach ($chattomentee as $key => $value) $allchat2[$key] = $value;
+          $allchat = array_merge($allchat1, $allchat2);
+          arsort($allchat);
+
+          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,]);
        //return redirect('/home');
     }
 }

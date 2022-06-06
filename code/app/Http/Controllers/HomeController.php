@@ -14,9 +14,7 @@ class HomeController extends Controller
 {
   public function index()
     {
-      $mentoring = new Mentoring;
-      $mentoring = Mentoring::latest()->get();
-   
+     
       /*/
       $meetingrequest = new MeetingRequest;
       $meetingrequest = MeetingRequest::latest()->get();
@@ -83,6 +81,16 @@ class HomeController extends Controller
           $mentoring = new Mentoring;
           $mentoring = Mentoring::where('mentee' , '=', $user->id)->get();
 
-          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+          $chatmentee = Chat::where('mentee' , '=', $user->id)->where('mentor' , '=',  $user->id)->get();
+          $chattomentee = Chat::where('mentee' , '=', $user->id)->where('mentor' , '!=',  $user->id)->get();
+          $allchat1 = array();
+          $allchat2 = array();
+          $allchat = array();
+          foreach ($chatmentee as $key => $value) $allchat1[$key] = $value;
+          foreach ($chattomentee as $key => $value) $allchat2[$key] = $value;
+          $allchat = array_merge($allchat1, $allchat2);
+          arsort($allchat);
+
+          return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,]);
           }
 }
