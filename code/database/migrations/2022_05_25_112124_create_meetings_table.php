@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('notes');
             $table->string('date');
             $table->string('URL');
+            $table->string('status');
             $table->string('mentor');
             $table->string('mentee');
             $table->timestamps();

@@ -60,10 +60,12 @@ Route::post('/newmentoring', 'App\Http\Controllers\MentoringController@store');
 Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringController@remove');
 
 
-Route::post('/newmeeting', 'App\Http\Controllers\MeetingRequestController@store');
-Route::delete('/newmeeting/{meetingrequest}', 'App\Http\Controllers\MeetingRequestController@remove');
+Route::post('/newmeeting', 'App\Http\Controllers\MeetingController@store');
+Route::delete('/newmeeting/{meeting}', 'App\Http\Controllers\MeetingController@remove');
 
 Route::post('/newtask', 'App\Http\Controllers\TaskController@store');
 Route::delete('/newtask/{task}', 'App\Http\Controllers\TaskController@remove');
 Route::put('/newtask/{task}', 'App\Http\Controllers\TaskController@markdone');
 
+
+Route::post('/newchat', 'App\Http\Controllers\ChatController@store');

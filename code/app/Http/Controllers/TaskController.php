@@ -43,7 +43,7 @@ class TaskController extends Controller
 
 //       return redirect('/home');
     }
-    public function remove(Task $task)
+    public function remove(Task $task , Request $request)
     {
       /*/
         $development = new Development;
@@ -54,9 +54,20 @@ class TaskController extends Controller
         $development->save();
       /*/
         $task->delete();
-       return redirect('/home');
+        $task = new Task;
+        $task = Task::where('mentee' , '=', $request->mentee)->get();
+        $menteefind = new User;
+        $menteefind = User::where('id' , '=', $request->mentee)->take(1)->get();
+        $mentee = $menteefind[0];
+        
+        $userloginedin = Auth::user();
+        $mentoring = new Mentoring;
+        $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
+        
+        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+       //return redirect('/home');
     }
-    public function markdone(Task $task)
+    public function markdone(Task $task,Request $request)
     {
         /*/
         $development = new Development;
@@ -66,9 +77,21 @@ class TaskController extends Controller
         $development->Completed_task += 1;
         $development->save();
 /*/
-        $task->Status = "Done";
+        $task->status = "Done";
         $task->save();
 
-       return redirect('/home');
+
+        $task = new Task;
+        $task = Task::where('mentee' , '=', $request->mentee)->get();
+        $menteefind = new User;
+        $menteefind = User::where('id' , '=', $request->mentee)->take(1)->get();
+        $mentee = $menteefind[0];
+        
+        $userloginedin = Auth::user();
+        $mentoring = new Mentoring;
+        $mentoring = Mentoring::where('mentee' , '=', $request->mentee)->get();
+        
+        return view('welcome', ['meetingrequests' => $mentoring,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,]);
+       //return redirect('/home');
     }
 }

@@ -124,7 +124,7 @@ function Prioritiespill($whichone) {
 
                         {{ Prioritiespill($task->priority) }}
                         
-                        @if($task->Status != "Done")
+                        @if($task->status != "Done")
                         <form class="" action="{{ url('/newtask', $task->id) }}" method="post">
                         <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
                          <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
@@ -171,13 +171,22 @@ function Prioritiespill($whichone) {
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Chat Box
-                        <div class="alert alert-primary" role="alert">
-                            First person
-                        </div>
-
-                        <div class="alert alert-success" role="alert">
-                            Second person
-                        </div>
+                    @foreach ($chats as $chat )
+                 
+                   @if ($chat->mentee != $chat->mentor)
+                    <div class="alert alert-primary" role="alert">
+                    @else
+                    <div class="alert alert-success" role="alert">
+                    @endif
+                    {{ $chat->message }}
+                    ({{ $chat->created_at }})
+                    
+                          </div>
+                          
+                @endforeach
+               
+                
+                      
                     </li>
                 </ul>
             </div>
@@ -303,7 +312,16 @@ function Prioritiespill($whichone) {
                 <h2>Live Chat</h2>
             </div>
             <div class="modal-body">
-                <form action="test.html">
+            <form
+            class="form-horizontal"
+            action="{{ url('/newchat') }}"
+            method="post"
+            role="form">
+                
+                <textarea class="form-control" id="message" name="message" rows="3" placeholder="Type Your Message "></textarea>
+            <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
+            {{ csrf_field() }}
                     <input type='submit'></form>
                 </div>
                 <div class="modal-footer">
@@ -326,7 +344,15 @@ function Prioritiespill($whichone) {
                     action="{{ url('/newmeeting') }}"
                     method="post"
                     role="form">
-                    <input type='text' class='form-control' placeholder='title' name='Text'>
+                   
+                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe why needed this meeting"></textarea>
+                    <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="notes"></textarea>
+                    <input type='text' class='form-control' placeholder='URL for Meeting' name='URL'>
+                    <input type='date' class='form-control' placeholder='Date' name='date'>
+                   
+    
+
+
                     <input value="Add" type='submit' class="btn btn-primary">
                     {{ csrf_field() }}
                 </form>
