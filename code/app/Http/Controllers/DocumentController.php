@@ -14,9 +14,10 @@ class DocumentController extends Controller
 {
     public function store(Request $request)
     {
-        //$validatedData = $request->validate([
-        //    'file' => 'required|csv,txt,xlx,xls,pdf|max:2048',
-        //   ]);
+        
+        $request->validate([
+            'document' => 'required|mimes:pdf,csv,xls,xlsx,doc,docx|max:2048',
+        ]);
 
         //document->file
         $document = new Document;
@@ -24,6 +25,11 @@ class DocumentController extends Controller
         $document->description = $request->description;
         $document->mentor = empty($request->mentor) ? '0' : $request->mentor;
         $document->mentee = empty($request->mentee) ? '0' : $request->mentee;
+        $file = $request->file('document');
+        
+        $document->ext = $file->extension();;
+        $document->filename = $file->getClientOriginalName();
+        
 
         
 

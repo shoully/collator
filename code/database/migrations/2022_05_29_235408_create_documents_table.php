@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('document',300);
+            $table->string('ext');
+            $table->string('filename');
             $table->string('mentor');
             $table->string('mentee');
             $table->timestamps();
