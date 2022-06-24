@@ -160,6 +160,24 @@ function Prioritiespill($whichone) {
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Marketing Plan</li>
                     <li class="list-group-item">Business Model Canvas</li>
+                    @if (isset($documents))
+                    @foreach ($documents as $document )
+                    <?php
+                    $doc= $document->document;
+                    echo $ppath =base_path();
+                    $filepath = public_path('storage\\');
+                    $total = $filepath.$doc;
+                    $testhere = "storage/images/".$document->document;
+                 
+                   //http://127.0.0.1:8000/storage/images/1656033024FOs09b6XwAAG7IN.jpg
+                   
+                   //{{ asset('/storage/images//storage/images/1656000112FOs09b6XwAAG7IN.jpg')}}
+                   ?>
+                   
+                   <img src="{{ asset('/storage/images/1656033024FOs09b6XwAAG7IN.jpg')}}" alt = 'no image' width= '50' height='50' class="img img-responsive" />
+                    <img src="<?php echo asset(''.$testhere.'')?>" alt = 'no image' width= '50' height='50' class="img img-responsive" />
+                    @endforeach
+                @endif
                 </ul>
             </div>
         </div>
@@ -295,8 +313,22 @@ function Prioritiespill($whichone) {
             <h2>Adding Document</h2>
         </div>
         <div class="modal-body">
-            <form action="test.html">
-                <input type='submit'></form>
+
+        <form  id="upload-file" action="{{ url('/documentsadd') }}" method="post" enctype="multipart/form-data">
+            
+        <input type='text' class='form-control' placeholder='title' name='title'>
+        <input class="form-control" name="document" type="file" id="document">
+        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe the doc"></textarea>
+        
+        <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+        <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
+        {!! csrf_field() !!}
+        <input type="submit" value="Save" class="btn btn-success">
+        
+
+        </form>
+
+
             </div>
             <div class="modal-footer">
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->string('document');
+            $table->string('document',300);
             $table->string('mentor');
             $table->string('mentee');
             $table->timestamps();

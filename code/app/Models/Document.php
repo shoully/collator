@@ -9,4 +9,6 @@ class Document extends Model
 {
     use HasFactory;
     protected $table = 'documents';
+    protected $primaryKey = 'id';
+    protected $fillable = ['title', 'description', 'document','mentor','mentee'];
 }

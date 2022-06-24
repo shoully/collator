@@ -3,9 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,9 +23,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
@@ -50,15 +45,12 @@ require __DIR__ . '/auth.php';
 Route::get('/home', 'App\Http\Controllers\HomeController@index');
 //main 2 welcome Mentor
 Route::get('/home2', 'App\Http\Controllers\HomeController@listofuser');
-
 //Mentor click follow
 Route::post('/homefollow/{user}', 'App\Http\Controllers\HomeController@fromlistofuser');
-
 
 //5 buttoms
 Route::post('/newmentoring', 'App\Http\Controllers\MentoringController@store');
 Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringController@remove');
-
 
 Route::post('/newmeeting', 'App\Http\Controllers\MeetingController@store');
 Route::delete('/newmeeting/{meeting}', 'App\Http\Controllers\MeetingController@remove');
@@ -67,5 +59,7 @@ Route::post('/newtask', 'App\Http\Controllers\TaskController@store');
 Route::delete('/newtask/{task}', 'App\Http\Controllers\TaskController@remove');
 Route::put('/newtask/{task}', 'App\Http\Controllers\TaskController@markdone');
 
-
 Route::post('/newchat', 'App\Http\Controllers\ChatController@store');
+
+
+Route::post('/documentsadd', 'App\Http\Controllers\DocumentController@store');
