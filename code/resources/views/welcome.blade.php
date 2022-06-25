@@ -164,18 +164,18 @@ function Prioritiespill($whichone) {
                     @foreach ($documents as $document )
                     <?php
                     $doc= $document->document;
-                    echo $ppath =base_path();
-                    $filepath = public_path('storage\\');
-                    $total = $filepath.$doc;
-                    $testhere = "storage/images/".$document->document;
+                    $fileloc = "storage/images/".$document->document;
                  
                    //http://127.0.0.1:8000/storage/images/1656033024FOs09b6XwAAG7IN.jpg
                    
                    //{{ asset('/storage/images//storage/images/1656000112FOs09b6XwAAG7IN.jpg')}}
+                   //<img src="<?php echo asset(''.$fileloc.'')
+                   //here php closing
+                   //" alt = 'no image' width= '50' height='50' class="img img-responsive" />
                    ?>
+                   <li class="list-group-item">{{  $document->filename }}</li>
                    
-                   <img src="{{ asset('/storage/images/1656033024FOs09b6XwAAG7IN.jpg')}}" alt = 'no image' width= '50' height='50' class="img img-responsive" />
-                    <img src="<?php echo asset(''.$testhere.'')?>" alt = 'no image' width= '50' height='50' class="img img-responsive" />
+                    
                     @endforeach
                 @endif
                 </ul>
