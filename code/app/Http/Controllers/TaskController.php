@@ -9,7 +9,8 @@ use App\Models\Mentoring;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\Chat;
-
+use App\Models\Document;
+use App\Models\Meeting;
 class TaskController extends Controller
 {
   public function store(Request $request)
@@ -24,7 +25,8 @@ class TaskController extends Controller
     $task->mentee = empty($request->mentee) ? '0' : $request->mentee;
 
     $task->save();
-
+    $meeting = Meeting::where('mentee' , '=', $request->mentee)->get();
+    $document = Document::where('mentee', '=', $request->mentee)->get();
     $task = new Task;
     $task = Task::where('mentee', '=', $request->mentee)->get();
     $menteefind = new User;
@@ -45,7 +47,7 @@ class TaskController extends Controller
     $allchat = array_merge($allchat1, $allchat2);
     arsort($allchat);
 
-    return view('welcome', ['meetingrequests' => $mentoring, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,]);
+    return view('welcome', ['meetingrequests' => $meeting, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document,]);
 
   }
   public function remove(Task $task, Request $request)
@@ -60,8 +62,9 @@ class TaskController extends Controller
 
     $userloginedin = Auth::user();
     $mentoring = new Mentoring;
+    $meeting = Meeting::where('mentee' , '=', $request->mentee)->get();
     $mentoring = Mentoring::where('mentee', '=', $request->mentee)->get();
-
+    $document = Document::where('mentee', '=', $request->mentee)->get();
     $chatmentee = Chat::where('mentee', '=', $request->mentee)->where('mentor', '=',  $request->mentee)->get();
     $chattomentee = Chat::where('mentee', '=', $request->mentee)->where('mentor', '!=',  $request->mentee)->get();
     $allchat1 = array();
@@ -72,7 +75,7 @@ class TaskController extends Controller
     $allchat = array_merge($allchat1, $allchat2);
     arsort($allchat);
 
-    return view('welcome', ['meetingrequests' => $mentoring, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,]);
+    return view('welcome', ['meetingrequests' => $meeting, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document,]);
   }
   public function markdone(Task $task, Request $request)
   {
@@ -87,8 +90,9 @@ class TaskController extends Controller
 
     $userloginedin = Auth::user();
     $mentoring = new Mentoring;
+    $meeting = Meeting::where('mentee' , '=', $userloginedin->id$request->mentee)->get();
     $mentoring = Mentoring::where('mentee', '=', $request->mentee)->get();
-
+    $document = Document::where('mentee', '=', $request->mentee)->get();
     $chatmentee = Chat::where('mentee', '=', $request->mentee)->where('mentor', '=',  $request->mentee)->get();
     $chattomentee = Chat::where('mentee', '=', $request->mentee)->where('mentor', '!=',  $request->mentee)->get();
     $allchat1 = array();
@@ -99,6 +103,6 @@ class TaskController extends Controller
     $allchat = array_merge($allchat1, $allchat2);
     arsort($allchat);
 
-    return view('welcome', ['meetingrequests' => $mentoring, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,]);
+    return view('welcome', ['meetingrequests' => $meeting, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document,]);
   }
 }

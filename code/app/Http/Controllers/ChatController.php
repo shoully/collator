@@ -8,7 +8,8 @@ use App\Models\Chat;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\Mentoring;
-
+use App\Models\Document;
+use App\Models\Meeting;
 class ChatController extends Controller
 {
     public function store(Request $request)
@@ -23,6 +24,8 @@ class ChatController extends Controller
 
 
         //$chat = Chat::where('mentee' , '=', $request->mentee)->get();
+        $meeting = Meeting::where('mentee' , '=', $request->mentee)->get();
+        $document = Document::where('mentee', '=', $request->mentee)->get();
 
         $task = Task::where('mentee', '=', $request->mentee)->get();
         $menteefind = User::where('id', '=', $request->mentee)->take(1)->get();
@@ -47,7 +50,7 @@ class ChatController extends Controller
         $allchat = array_merge($allchat1, $allchat2);
         arsort($allchat);
 
-        return view('welcome', ['meetingrequests' => $mentoring, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,]);
+        return view('welcome', ['meetingrequests' => $meeting, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document]);
         /*/
         $development = new Development;
         $development = Development::find($request->Development_id);

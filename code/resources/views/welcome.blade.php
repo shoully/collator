@@ -158,8 +158,6 @@ function Prioritiespill($whichone) {
 
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Marketing Plan</li>
-                    <li class="list-group-item">Business Model Canvas</li>
                     @if (isset($documents))
                     @foreach ($documents as $document )
                     <?php
@@ -217,7 +215,7 @@ function Prioritiespill($whichone) {
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (isset($meetingrequests)) @foreach ($meetingrequests as $meetingrequest)
-                    <li class="list-group-item">{{ ucfirst($meetingrequest->Text) }}
+                    <li class="list-group-item">{{ $meetingrequest }}
                         <form
 
                     action="{{ url('/newmeeting', $meetingrequest->id) }}"
@@ -382,7 +380,8 @@ function Prioritiespill($whichone) {
                     <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="notes"></textarea>
                     <input type='text' class='form-control' placeholder='URL for Meeting' name='URL'>
                     <input type='date' class='form-control' placeholder='Date' name='date'>
-                   
+                    <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
     
 
 

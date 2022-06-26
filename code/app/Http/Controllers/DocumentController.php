@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Mentoring;
 use App\Models\Task;
 use App\Models\Chat;
-
+use App\Models\Meeting;
 class DocumentController extends Controller
 {
     public function store(Request $request)
@@ -31,29 +31,14 @@ class DocumentController extends Controller
         $document->filename = $file->getClientOriginalName();
         
 
-        
-
         $fileName = time().$request->file('document')->getClientOriginalName();
-        //$path = $request->file('document')->storeAs('images', $fileName, 'public'); 
         $request->document->move(public_path('storage/images'), $fileName);
-      //  $requestData["document"] = '/storage/'.$path;
-        //Document::create($requestData);
-        
 
-    //    echo "<br>";
-    //    echo $fileName = time().$request->file('document')->getClientOriginalName();
-    //    echo "<br>";
-    //    echo $path     = $request->file('document')->storeAs('images', $fileName, 'public');
-    //    echo "<br>";
-    //     //$requestData["document"] = '/storage/'.$path;
-       $document->document    = $fileName;
+        $document->document    = $fileName;
         $document->save();
 
-        //$chat = Chat::where('mentee' , '=', $request->mentee)->get();
-
-
         $document = Document::where('mentee', '=', $request->mentee)->get();
-
+        $meeting = Meeting::where('mentee' , '=', $request->mentee)->get();
         $task = Task::where('mentee', '=', $request->mentee)->get();
         $menteefind = User::where('id', '=', $request->mentee)->take(1)->get();
         $mentee = $menteefind[0];
@@ -76,7 +61,7 @@ class DocumentController extends Controller
         $allchat = array_merge($allchat1, $allchat2);
         arsort($allchat);
 
-        return view('welcome', ['meetingrequests' => $mentoring, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document]);
+        return view('welcome', ['meetingrequests' => $meeting, 'mentorings' => $mentoring, 'tasks' => $task, 'currentuser' => $userloginedin, 'mentee' => $mentee, 'chats' => $allchat,'documents' => $document]);
       
     }
 }

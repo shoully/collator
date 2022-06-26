@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Chat;
 use App\Models\Task;
 use App\Models\Mentoring;
+use App\Models\Document;
 
 class MeetingController extends Controller
 {
@@ -25,17 +26,13 @@ public function store(Request $request)
         $meeting->mentee = empty($request->mentee) ? '0' : $request->mentee;
 
         $meeting->save();
-     
-       
-        
-
 
         $userloginedin = Auth::user();
         $task = Task::where('mentee' , '=', $userloginedin->id)->get();
             $menteefind = User::where('id' , '=', $userloginedin->id)->take(1)->get();
             $mentee = $menteefind[0];
-            
-            $meeting = Meeting::where('mentee' , '=', $userloginedin->id)->get();
+            $document = Document::where('mentee', '=', $request->mentee)->get();
+            $meeting = Meeting::where('mentee' , '=', $request->mentee)->get();
            
             $mentoring = Mentoring::where('mentee' , '=', $userloginedin->id)->get();
             
@@ -50,7 +47,7 @@ public function store(Request $request)
             arsort($allchat);
          
     
-            return view('welcome', ['meetingrequests' => $meeting,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,]);
+            return view('welcome', ['meetingrequests' => $meeting,'mentorings' => $mentoring,'tasks' => $task,'currentuser' => $userloginedin,'mentee'=>$mentee,'chats'=>$allchat,'documents' => $document,]);
      }
 
      public function remove(Meeting $meeting)
