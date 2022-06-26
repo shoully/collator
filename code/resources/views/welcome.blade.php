@@ -76,6 +76,7 @@ function Prioritiespill($whichone) {
                         <li class="list-group-item">
                             {{ ($mentoring->title) }}
                          
+                            @if ($currentuser->type == "Mentor")
                         <form class="" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
                         <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
             <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
@@ -84,7 +85,7 @@ function Prioritiespill($whichone) {
                             {{ method_field('DELETE') }}
                             {{ csrf_field() }}
                         </form>
-                    
+                    @endif
                         
                         <div class="progress">
                             <div
@@ -133,6 +134,7 @@ function Prioritiespill($whichone) {
                         {{ csrf_field() }}
                     </form>
                     @endif
+                    @if ($currentuser->type == "Mentor")
                         <form class="" action="{{ url('/newtask', $task->id) }}" method="post">
                         <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
                     <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
@@ -140,6 +142,7 @@ function Prioritiespill($whichone) {
                         {{ method_field('DELETE') }}
                         {{ csrf_field() }}
                     </form>
+                    @endif
                     </li>
 
                     @endforeach
@@ -215,16 +218,64 @@ function Prioritiespill($whichone) {
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (isset($meetingrequests)) @foreach ($meetingrequests as $meetingrequest)
-                    <li class="list-group-item">{{ $meetingrequest }}
-                        <form
 
-                    action="{{ url('/newmeeting', $meetingrequest->id) }}"
-                    method="post">
-                    <input type="submit" value="x" name="x" class="btn btn-danger float-end">
-                    {{ method_field('DELETE') }}
-                    {{ csrf_field() }}
-                </form>
-                    </li>
+                  @php
+                  $back="";
+                  $textcolor="";
+                  if ($meetingrequest->status =="requested")
+                  {  
+                  $back=" border-info";
+                    $textcolor="text-info";
+                }
+                    if ($meetingrequest->status =="ongoing")
+                    {
+                    $back=" border-success";
+                    $textcolor="text-success";
+                }
+                    if ($meetingrequest->status =="declined")
+                    {
+                    $back=" border-danger";
+                    $textcolor="text-danger";
+                }
+                    if ($meetingrequest->status =="done")
+                { 
+                    $back=" border-dark";
+                    $textcolor="text-dark";
+                }   
+                  @endphp
+
+                    <div class="card <?php echo $back;?> text-center mb-3" style="max-width: 18rem;">
+                        <div class="card-header <?php echo $textcolor;?>">
+                          {{ $meetingrequest->description }}
+                        </div>
+                        <div class="card-body ">
+                          <h5 class="card-title">{{ $meetingrequest->URL }}</h5>
+                          <p class="card-text">{{ $meetingrequest->notes}}.</p>
+                         
+                        </div>
+                        <div class="card-footer bg-transparent border-primary">
+                            <form
+
+                            action="{{ url('/newmeeting', $meetingrequest->id) }}"
+                            method="post">
+                           
+                            <input type="submit" value="ongoing" name="x" class="btn btn-danger btn-sm">
+                            <input type="submit" value="declined" name="x" class="btn btn-danger btn-sm">
+                            <input type="submit" value="done" name="x" class="btn btn-danger btn-sm">                            
+                            <input type="submit" value="x" name="x" class="btn btn-danger btn-sm">
+                            <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
+                            <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
+                            {{ method_field('DELETE') }}
+                            {{ csrf_field() }}
+                        </form>
+                        
+                        </div>
+                        <div class="card-footer text-muted">
+                          {{ $meetingrequest->date }}
+                        </div>
+                      </div>
+                      <br>
+                
                 @endforeach
                 @endif
             </ul>

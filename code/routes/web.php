@@ -48,6 +48,7 @@ Route::get('/home2', 'App\Http\Controllers\HomeController@listofuser');
 //Mentor click follow
 Route::post('/homefollow/{user}', 'App\Http\Controllers\HomeController@fromlistofuser');
 
+
 //5 buttoms
 Route::post('/newmentoring', 'App\Http\Controllers\MentoringController@store');
 Route::delete('/newmentoring/{mentoring}', 'App\Http\Controllers\MentoringController@remove');
