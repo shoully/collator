@@ -9,17 +9,7 @@ class RedirectAuthenticatedUsersController extends Controller
 {
     public function home()
     {
-        if (auth()->user()->type == 'Mentor') {
-            return redirect('/adminDashboard');
-        }
-        elseif(auth()->user()->type == 'Mentee'){
-            return redirect('/userDashboard');
-        }
-        elseif(auth()->user()->type == 'guest'){
-            return redirect('/guestDashboard');
-        }
-        else{
-            return auth()->logout();
-        }
+        // Redirect to project selection first - users must select a project before accessing dashboard
+        return redirect()->route('project.select');
     }
 }
