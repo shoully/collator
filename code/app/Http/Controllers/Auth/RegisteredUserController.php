@@ -10,18 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Inertia\Inertia;
 
 class RegisteredUserController extends Controller
 {
     /**
      * Display the registration view.
      *
-     * @return \Inertia\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        return Inertia::render('Auth/Register');
+        return view('auth.register');
     }
 
     /**
@@ -34,38 +33,28 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => 'nullable|string|max:255',
+            'bio' => 'nullable|string|max:255',
+            'type' => 'required|in:Mentor,Mentee,guest',
         ]);
 
-   
-        /*/
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'bio' => $request->bio,
+            'phone' => $request->phone ?? '',
+            'bio' => $request->bio ?? '',
             'type' => $request->type,
             'password' => Hash::make($request->password),
         ]);
 
-/*/
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->bio = $request->bio;
-        $user->type = $request->type;
-        $user->password =Hash::make($request->password);
-        $user->save();
-
-
         event(new Registered($user));
 
+        Auth::login($user);
+
         return redirect()->intended(RouteServiceProvider::HOME);
-       
     }
 }
