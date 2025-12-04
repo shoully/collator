@@ -29,7 +29,9 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::inertia('/dashboard', 'Dashboard')->name('dashboard');
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
     Route::get("/redirectAuthenticatedUsers", [RedirectAuthenticatedUsersController::class, "home"]);
 
@@ -40,7 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/userDashboard', [MenteeDashboardController::class, 'index'])->name('userDashboard');
     });
     Route::group(['middleware' => 'checkRole:guest'], function () {
-        Route::inertia('/guestDashboard', 'GuestDashboard')->name('guestDashboard');
+        Route::get('/guestDashboard', function () {
+        return Inertia::render('GuestDashboard');
+    })->name('guestDashboard');
     });
 });
 require __DIR__ . '/auth.php';
