@@ -10,10 +10,11 @@ body {
 }
 
 .project-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background-color: #f8f9fa;
+    color: #333;
     padding: 2rem 0;
     margin-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .card {
