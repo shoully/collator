@@ -15,9 +15,14 @@ code/public/hot
 code/public_html/storage
 code/public_html/hot
 
+# Environment & secrets
 code/storage/*.key
 code/.env
 code/Homestead.yaml
 code/Homestead.json
 code/.vagrant
 code/.phpunit.result.cache
+
+# macOS junk
+.DS_Store
+code/.DS_Store

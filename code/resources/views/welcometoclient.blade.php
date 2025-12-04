@@ -26,40 +26,61 @@
               </tr>
             </thead>
             <tbody>
-             
-            @foreach ($users as $user)       
-            <tr class="candidates-list">
-                <td class="title">
-                  <div class="thumb">
-                    <img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-                  </div>
-                  <div class="candidate-list-details">
-                    <div class="candidate-list-info">
-                      <div class="candidate-list-title">
-                        <h5 class="mb-0"><a href="#"> {{ ($user->name) }}</a></h5>
+            @if(isset($users) && $users->count() > 0)
+                @foreach ($users as $user)       
+                <tr class="candidates-list">
+                    <td class="title">
+                      <div class="thumb">
+                        <img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
                       </div>
-                      <div class="candidate-list-option">
-                        <ul class="list-unstyled">
-                          <li><i class="fas fa-filter pr-1"></i>{{ ($user->bio) }}</li>
-                          <li><i class="fas fa-map-marker-alt pr-1"></i>{{ ($user->phone) }}</li>
-                        </ul>
+                      <div class="candidate-list-details">
+                        <div class="candidate-list-info">
+                          <div class="candidate-list-title">
+                            <h5 class="mb-0"><a href="#"> {{ ($user->name) }}</a></h5>
+                          </div>
+                          <div class="candidate-list-option">
+                            <ul class="list-unstyled">
+                              <li><i class="fas fa-envelope pr-1"></i>{{ ($user->email) }}</li>
+                              @if($user->bio)
+                              <li><i class="fas fa-info-circle pr-1"></i>{{ ($user->bio) }}</li>
+                              @endif
+                              @if($user->phone)
+                              <li><i class="fas fa-phone pr-1"></i>{{ ($user->phone) }}</li>
+                              @endif
+                            </ul>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-                <td class="candidate-list-favourite-time text-center">
-                  <a class="candidate-list-favourite order-2 text-danger" href="#"><i class="fas fa-heart"></i></a>
-                  <span class="candidate-list-time order-1">Status all Green or not</span>
-                </td>
-                <td>
-                <form class="" action="{{ url('/homefollow', $user->id) }}" method="post">
-                            <input type="submit" value="follow" name="follow" class="btn btn-default float-end">
-                            {{ csrf_field() }}
-                        </form>
-                </td>
-              </tr>
-                    @endforeach
-
+                    </td>
+                    <td class="candidate-list-favourite-time text-center">
+                      @php
+                        $hasMentoring = \App\Models\Mentoring::where('mentor', Auth::id())
+                            ->where('mentee', $user->id)
+                            ->exists();
+                      @endphp
+                      @if($hasMentoring)
+                        <span class="badge bg-success">Mentoring</span>
+                      @else
+                        <span class="badge bg-secondary">Not Started</span>
+                      @endif
+                    </td>
+                    <td>
+                    <form class="" action="{{ url('/homefollow', $user->id) }}" method="post">
+                                <input type="submit" value="follow" name="follow" class="btn btn-primary float-end">
+                                <input type="hidden" name="project_id" value="{{ request()->get('project_id') }}">
+                                {{ csrf_field() }}
+                            </form>
+                    </td>
+                  </tr>
+                        @endforeach
+            @else
+                <tr>
+                    <td colspan="3" class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No mentees found. All available mentees will appear here once you start a mentoring relationship.</p>
+                    </td>
+                </tr>
+            @endif
             </tbody>
           </table>
          

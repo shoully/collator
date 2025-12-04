@@ -5,6 +5,11 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Suppress PHP 8.4 deprecation warnings from vendor packages
+// These are warnings from Laravel/Symfony dependencies, not application code
+// E_STRICT is deprecated in PHP 8.4, so we only suppress E_DEPRECATED
+error_reporting(E_ALL & ~E_DEPRECATED);
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance

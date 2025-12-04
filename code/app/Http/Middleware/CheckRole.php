@@ -16,15 +16,23 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        if ($role == 'mentor' && auth()->user()->role != 'mentor' ) {
+        $user = auth()->user();
+        
+        if (!$user) {
             abort(403);
         }
-        if ($role == 'mentee' && auth()->user()->role != 'mentee' ) {
+
+        // Normalize role parameter to match database values (Mentor, Mentee, guest)
+        $normalizedRole = ucfirst(strtolower($role));
+        if ($normalizedRole === 'Guest') {
+            $normalizedRole = 'guest';
+        }
+
+        // Check if user type matches required role
+        if ($user->type !== $normalizedRole) {
             abort(403);
         }
-        if ($role == 'guest' && auth()->user()->role != 'guest' ) {
-            abort(403);
-        }
+
         return $next($request);
     }
 }
