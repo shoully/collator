@@ -15,204 +15,170 @@ function Prioritiespill($whichone) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{asset('css/model.css')}}">
-    <title>Workspace - ShareHub</title>
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #10b981;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
-        }
-        .workspace-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .card {
-            border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .card-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-weight: 600;
-        }
-        .progress {
-            height: 8px;
-        }
-        .btn-primary {
-            background: var(--primary-color);
-            border: none;
-        }
-        .btn-primary:hover {
-            background: #4338ca;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="{{asset('css/collator.css')}}">
+    <title>Workspace - Collator</title>
 </head>
 <body>
-    <!-- Workspace Header -->
-    <div class="workspace-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-cubes me-2"></i><strong>Collator</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ $currentuser->type === 'Mentor' ? route('adminDashboard', ['project_id' => $selectedProject->id ?? '']) : route('userDashboard', ['project_id' => $selectedProject->id ?? '']) }}">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('project.select') }}">
+                            <i class="fas fa-exchange-alt me-1"></i>Change Project
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-sign-out-alt me-1"></i>Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="project-header">
         <div class="container">
-            <div class="row justify-content-md-center align-items-center">
-                <div class="col-md-auto">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-tie me-2"></i>
-                        Mentor(@if(isset($mentor) && $mentor){{ $mentor->name }}@else{{ $currentuser->type === 'Mentor' ? $currentuser->name : 'Not Assigned' }}@endif)
-                    </h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="mb-0">
+                        @if(isset($selectedProject) && $selectedProject)
+                            {{ $selectedProject->title }}
+                        @else
+                            Workspace
+                        @endif
+                    </h2>
+                    <p class="mb-0">
+                        <span class="badge bg-light text-dark">
+                            <i class="fas fa-user-tie me-1"></i>
+                            Mentor: @if(isset($mentor) && $mentor){{ $mentor->name }}@else{{ $currentuser->type === 'Mentor' ? $currentuser->name : 'Not Assigned' }}@endif
+                        </span>
+                        <span class="badge bg-light text-dark ms-2">
+                            <i class="fas fa-user me-1"></i>
+                            Mentee: {{ $mentee->name }}
+                        </span>
+                    </p>
                 </div>
-                <div class="col-md-auto">
-                    <i class="fas fa-equals"></i>
-                </div>
-                <div class="col-md-auto">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user me-2"></i>
-                        Mentee({{ $mentee->name }})
-                    </h4>
-                </div>
-            </div>
-            <div class="row justify-content-md-center mt-3">
-                <div class="col-md-auto">
-                    <small><i class="fas fa-calendar-alt me-1"></i>Mentoring Cycle: 90 days</small>
-                </div>
-                <div class="col-md-auto">
-                    <small>Time Remaining</small>
-                    <div class="progress" style="width: 200px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                @if(isset($projects) && $projects->count() > 0)
-                <div class="col-md-auto">
-                    <form method="GET" action="{{ route('home') }}" class="d-inline">
-                        <select name="project_id" class="form-select form-select-sm" onchange="this.form.submit()" style="width: 200px;">
-                            <option value="">Select Project</option>
-                            @foreach($projects as $project)
-                                <option value="{{ $project->id }}" {{ (isset($selectedProject) && $selectedProject && $selectedProject->id == $project->id) ? 'selected' : '' }}>
-                                    {{ $project->title }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </form>
-                </div>
-                @endif
-                <div class="col-md-auto">
-                    <a href="{{ $currentuser->type === 'Mentor' ? route('adminDashboard', ['project_id' => $selectedProject->id ?? '']) : route('userDashboard', ['project_id' => $selectedProject->id ?? '']) }}" class="btn btn-light btn-sm">
-                        <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
-                    </a>
-                </div>
-                <div class="col-md-auto">
-                    <a href="{{ route('project.select') }}" class="btn btn-outline-light btn-sm">
-                        <i class="fas fa-exchange-alt me-1"></i>Change Project
-                    </a>
-                </div>
-                <div class="col-md-auto">
-                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-light btn-sm">
-                            <i class="fas fa-sign-out-alt me-1"></i>Logout
-                        </button>
-                    </form>
+                <div>
+                    @if(isset($projects) && $projects->count() > 0)
+                        <form method="GET" action="{{ route('home') }}" class="d-inline">
+                            <select name="project_id" class="form-select" onchange="this.form.submit()">
+                                <option value="">Select a Project</option>
+                                @foreach($projects as $project)
+                                    <option value="{{ $project->id }}" {{ (isset($selectedProject) && $selectedProject && $selectedProject->id == $project->id) ? 'selected' : '' }}>
+                                        {{ $project->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+                    @endif
                 </div>
             </div>
-            @if(isset($selectedProject) && $selectedProject)
-            <div class="row justify-content-md-center mt-2">
-                <div class="col-md-auto">
-                    <span class="badge bg-light text-dark">
-                        <i class="fas fa-folder-open me-1"></i>Current Project: {{ $selectedProject->title }}
-                    </span>
+            <div class="d-flex align-items-center mt-3">
+                <small class="me-3"><i class="fas fa-calendar-alt me-1"></i>Mentoring Cycle: 90 days</small>
+                <div class="progress flex-grow-1" style="max-width: 300px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-            @endif
         </div>
     </div>
 
     <div class="container">
-        <div class="row justify-content-md-center">
-                <div class="col-md-auto">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-header">
-                            Areas to Develop
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Areas to Develop</span>
+                        @if ($currentuser->type == "Mentor")
+                            <button
+                            id="BtnAreatoDevelop"
+                            class="btn btn-primary btn-sm"
+                            onclick="show_my_receipt()"
+                            type="button"><i class="fas fa-plus"></i></button>
+                            @else
+                            <button
+                            id="BtnAreatoDevelop"
+                            class="btn btn-primary btn-sm"
+                            onclick="show_my_receipt()"
+                            disabled
+                            type="button"><i class="fas fa-plus"></i></button>
+                            @endif
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    @if (isset($mentorings)) 
+                    @foreach ($mentorings as $mentoring)
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <strong>{{ ($mentoring->title) }}</strong>
+                                @if($currentuser->type == "Mentor" && $mentoring->menteeUser)
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-user me-1"></i>For: {{ $mentoring->menteeUser->name }}
+                                    </small>
+                                @elseif($currentuser->type == "Mentee" && $mentoring->mentorUser)
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-user-tie me-1"></i>With: {{ $mentoring->mentorUser->name }}
+                                    </small>
+                                @endif
+                            </div>
                             @if ($currentuser->type == "Mentor")
-                                <button
-                                id="BtnAreatoDevelop"
-                                class="btn btn-primary float-end"
-                                onclick="show_my_receipt()"
-                                type="button">+</button>
-                                @else
-                                <button
-                                id="BtnAreatoDevelop"
-                                class="btn btn-primary float-end"
-                                onclick="show_my_receipt()"
-                                disabled
-                                type="button">+</button>
-                                @endif
-
+                                <form class="ms-2" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
+                                    <input type="hidden" name="mentee" value="{{ $mentoring->mentee ?? $mentee->id }}">
+                                    <input type="hidden" name="mentor" value="{{ $currentuser->id }}">
+                                    <button type="submit" name="x" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    {{ method_field('DELETE') }}
+                                    {{ csrf_field() }}
+                                </form>
+                            @endif
                         </div>
-<ul class="list-group list-group-flush">
-                        @if (isset($mentorings)) 
-                        @foreach ($mentorings as $mentoring)
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="flex-grow-1">
-                                    <strong>{{ ($mentoring->title) }}</strong>
-                                    @if($currentuser->type == "Mentor" && $mentoring->menteeUser)
-                                        <small class="text-muted d-block">
-                                            <i class="fas fa-user me-1"></i>For: {{ $mentoring->menteeUser->name }}
-                                        </small>
-                                    @elseif($currentuser->type == "Mentee" && $mentoring->mentorUser)
-                                        <small class="text-muted d-block">
-                                            <i class="fas fa-user-tie me-1"></i>With: {{ $mentoring->mentorUser->name }}
-                                        </small>
-                                    @endif
-                                </div>
-                                @if ($currentuser->type == "Mentor")
-                                    <form class="ms-2" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
-                                        <input type="hidden" name="mentee" value="{{ $mentoring->mentee ?? $mentee->id }}">
-                                        <input type="hidden" name="mentor" value="{{ $currentuser->id }}">
-                                        <button type="submit" name="x" class="btn btn-danger btn-sm">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                        {{ method_field('DELETE') }}
-                                        {{ csrf_field() }}
-                                    </form>
-                                @endif
-                            </div>
-                            <div class="progress mt-2">
-                                <div
-                                class="progress-bar"
-                                role="progressbar"
-                                style="width:0%"
-                                aria-valuenow="25"
-                                aria-valuemin="0"
-                                aria-valuemax="100"></div>
-                            </div>
-                        </li>
-                    @endforeach
-                  
-                     @endif
-                 
-                   
-                     
-                </ul>
+                        <div class="progress mt-2">
+                            <div
+                            class="progress-bar"
+                            role="progressbar"
+                            style="width:0%"
+                            aria-valuenow="25"
+                            aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                        </div>
+                    </li>
+                @endforeach
+                
+                    @endif
+                
+                
+                    
+            </ul>
 
-            </div>
-            <br>
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    Tasks
+        </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Tasks</span>
                     @if ($currentuser->type == "Mentor")
-                        <button id="BtnAddActivity" class="btn btn-primary float-end" type="button">+</button>
+                        <button id="BtnAddActivity" class="btn btn-primary btn-sm" type="button"><i class="fas fa-plus"></i></button>
                         @else
-                        <button id="BtnAddActivity" disabled class="btn btn-primary float-end" type="button">+</button>
+                        <button id="BtnAddActivity" disabled class="btn btn-primary btn-sm" type="button"><i class="fas fa-plus"></i></button>
                     @endif
 
                 </div>
@@ -277,45 +243,47 @@ function Prioritiespill($whichone) {
                     
                     @endif
 
-                  
+                
                 </ul>
             </div>
-            <br>
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    Documents
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
 
-                        <button id="BtnAddProject" class="btn btn-primary float-end" type="button">+</button>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Documents</span>
+                        <button id="BtnAddProject" class="btn btn-primary btn-sm" type="button"><i class="fas fa-plus"></i></button>
 
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (isset($documents))
                     @foreach ($documents as $document )
-                   <li class="list-group-item">
-                       <div class="d-flex justify-content-between align-items-center">
-                           <div>
-                               <a href="{{ route('document.download', $document) }}" class="text-decoration-none">
-                                   <i class="fas fa-file me-1"></i>{{ $document->filename }}
-                               </a>
-                               @if($currentuser->type == "Mentor" && $document->menteeUser)
-                                   <small class="text-muted d-block">
-                                       <i class="fas fa-user me-1"></i>Shared with: {{ $document->menteeUser->name }}
-                                   </small>
-                               @endif
-                           </div>
-                           <small class="text-muted">{{ $document->created_at->format('M d') }}</small>
-                       </div>
-                   </li>
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{{ route('document.download', $document) }}" class="text-decoration-none">
+                                <i class="fas fa-file me-1"></i>{{ $document->filename }}
+                            </a>
+                            @if($currentuser->type == "Mentor" && $document->menteeUser)
+                                <small class="text-muted d-block">
+                                    <i class="fas fa-user me-1"></i>Shared with: {{ $document->menteeUser->name }}
+                                </small>
+                            @endif
+                        </div>
+                        <small class="text-muted">{{ $document->created_at->format('M d') }}</small>
+                    </div>
+                </li>
                     @endforeach
                 @endif
                 </ul>
             </div>
         </div>
-        <div class="col-md-auto">
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    Projects
-                    <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm float-end">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Projects</span>
+                    <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
@@ -355,11 +323,13 @@ function Prioritiespill($whichone) {
                     @endif
                 </ul>
             </div>
-            <br>
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    Live Chat
-                        <button id="BtnLiveChat" class="btn btn-primary float-end" type="button">+</button>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Live Chat</span>
+                        <button id="BtnLiveChat" class="btn btn-primary btn-sm" type="button"><i class="fas fa-plus"></i></button>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -381,11 +351,13 @@ function Prioritiespill($whichone) {
                     </li>
                 </ul>
             </div>
-            <br>
-            <div class="card" style="width: 18rem;">
-                <div class="card-header">
-                    Meetings
-                        <button id="BtnMeetings" class="btn btn-primary float-end" type="button">+</button>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Meetings</span>
+                        <button id="BtnMeetings" class="btn btn-primary btn-sm" type="button"><i class="fas fa-plus"></i></button>
                 </div>
                 <ul class="list-group list-group-flush">
                     @if (isset($meetingrequests)) @foreach ($meetingrequests as $meetingrequest)
@@ -416,7 +388,7 @@ function Prioritiespill($whichone) {
                             }   
                         @endphp
 
-                        <div class="card <?php echo $back;?> text-center mb-3" style="max-width: 18rem;">
+                        <div class="card <?php echo $back;?> text-center mb-3">
                             <div class="card-header <?php echo $textcolor;?>">
                                 <strong>{{ $meetingrequest->description }}</strong>
                                 <small class="d-block mt-1">
@@ -509,8 +481,8 @@ function Prioritiespill($whichone) {
     <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header">
-            <span class="close">&times;</span>
-            <h2>Add Area to Develop</h2>
+            <h5 class="modal-title">Add Area to Develop</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form
@@ -518,7 +490,10 @@ function Prioritiespill($whichone) {
             action="{{ url('/newmentoring') }}"
             method="post"
             role="form">
-            <input type='text' class='form-control' placeholder='title' name='title'>
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type='text' class='form-control' placeholder='Enter title' name='title' id="title">
+            </div>
             <input value="Add" type='submit' class="btn btn-primary">
             <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
             <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
@@ -528,19 +503,15 @@ function Prioritiespill($whichone) {
             {{ csrf_field() }}
         </form>
     </div>
-    <div class="modal-footer">
-
-    </div>
 </div>
 </div>
 
 <div id="myModal2" class="modal">
     <!-- Modal content -->
-    <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header">
-
-            <h2>Add Task</h2>
+            <h5 class="modal-title">Add Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form
@@ -592,7 +563,7 @@ function Prioritiespill($whichone) {
                     })->values();
                 @endphp
                 @if($projectMentees->count() > 0)
-                    <select name='mentee' class="form-control" required>
+                    <select name='mentee' class="form-select" required>
                         <option value="">Select a mentee...</option>
                         @foreach($projectMentees as $menteeOption)
                             <option value="{{ $menteeOption->id }}">
@@ -613,7 +584,7 @@ function Prioritiespill($whichone) {
                             <br><small>This project currently has no assigned mentee and no mentoring relationships.</small>
                         @endif
                     </div>
-                    <select name='mentee' class="form-control" disabled>
+                    <select name='mentee' class="form-select" disabled>
                         <option value="">No valid mentees available</option>
                     </select>
                 @endif
@@ -625,7 +596,7 @@ function Prioritiespill($whichone) {
             @if (isset($mentorings) && $mentorings->count() > 0)
             <div class="mb-3">
                 <label class="form-label"><strong>Area to Develop (Optional)</strong></label>
-                <select name='mentoring_id' class="form-control">
+                <select name='mentoring_id' class="form-select">
                     <option value="">No specific area</option>
                     @foreach ($mentorings as $mentoring)
                         <option value="{{$mentoring->id}}">{{ ucfirst($mentoring->title) }}</option>
@@ -636,7 +607,7 @@ function Prioritiespill($whichone) {
             
             <div class="mb-3">
                 <label class="form-label"><strong>Priority *</strong></label>
-                <select class="form-control" name='priority' required>
+                <select class="form-select" name='priority' required>
                     <option value="High">High</option>
                     <option value="Medium" selected>Medium</option>
                     <option value="Low">Low</option>
@@ -655,27 +626,31 @@ function Prioritiespill($whichone) {
             {{ csrf_field() }}
         </form>
     </div>
-    <div class="modal-footer">
-
-    </div>
 </div>
 </div>
 
 <div id="myModal3" class="modal">
     <!-- Modal content -->
-    <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header">
-
-            <h2>Adding Document</h2>
+            <h5 class="modal-title">Adding Document</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
 
         <form  id="upload-file" action="{{ url('/documentsadd') }}" method="post" enctype="multipart/form-data">
-            
-        <input type='text' class='form-control' placeholder='title' name='title'>
-        <input class="form-control" name="document" type="file" id="document">
-        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe the doc"></textarea>
+        <div class="mb-3">
+            <label for="doc_title" class="form-label">Title</label>
+            <input type='text' class='form-control' placeholder='Enter title' name='title' id="doc_title">
+        </div>
+        <div class="mb-3">
+            <label for="document" class="form-label">Document</label>
+            <input class="form-control" name="document" type="file" id="document">
+        </div>
+        <div class="mb-3">
+            <label for="doc_description" class="form-label">Description</label>
+            <textarea class="form-control" id="doc_description" name="description" rows="3" placeholder="Describe the doc"></textarea>
+        </div>
         
         <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
         <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
@@ -683,14 +658,11 @@ function Prioritiespill($whichone) {
         <input type = "hidden" name = 'project_id' value = '{{ $selectedProject->id }}'>
         @endif
         {!! csrf_field() !!}
-        <input type="submit" value="Save" class="btn btn-success">
+        <button type="submit" class="btn btn-success">Save</button>
         
 
         </form>
 
-
-            </div>
-            <div class="modal-footer">
 
             </div>
         </div>
@@ -698,11 +670,10 @@ function Prioritiespill($whichone) {
 
     <div id="myModal4" class="modal">
         <!-- Modal content -->
-        <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-
-                <h2>Live Chat</h2>
+                <h5 class="modal-title">Live Chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <form
@@ -720,22 +691,17 @@ function Prioritiespill($whichone) {
             @endif
             {{ csrf_field() }}
                     <button type='submit' class="btn btn-primary mt-2">Send</button>
-                    <button type='button' class="btn btn-secondary mt-2" onclick="document.getElementById('myModal4').style.display='none'">Close</button>
             </form>
-                </div>
-                <div class="modal-footer">
-
                 </div>
             </div>
         </div>
 
         <div id="myModal5" class="modal">
             <!-- Modal content -->
-            <!-- Modal content -->
             <div class="modal-content">
                 <div class="modal-header">
-
-                    <h2>Meetings</h2>
+                    <h5 class="modal-title">Meetings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form
@@ -743,23 +709,31 @@ function Prioritiespill($whichone) {
                     action="{{ url('/newmeeting') }}"
                     method="post"
                     role="form">
-                   
-                    <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe why needed this meeting"></textarea>
-                    <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="notes"></textarea>
-                    <input type='text' class='form-control' placeholder='URL for Meeting' name='URL'>
-                    <input type='date' class='form-control' placeholder='Date' name='date'>
+                   <div class="mb-3">
+                        <label for="meet_description" class="form-label">Description</label>
+                        <textarea class="form-control" id="meet_description" name="description" rows="3" placeholder="Describe why needed this meeting"></textarea>
+                   </div>
+                   <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="notes"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="URL" class="form-label">URL for Meeting</label>
+                        <input type='text' class='form-control' placeholder='URL for Meeting' name='URL' id="URL">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type='date' class='form-control' placeholder='Date' name='date' id="date">
+                    </div>
                     <input type = "hidden" name = 'mentee' value = '{{ $mentee->id }}'>
             <input type = "hidden" name = 'mentor' value = '{{ $currentuser->id }}'>
             @if(isset($selectedProject) && $selectedProject)
             <input type = "hidden" name = 'project_id' value = '{{ $selectedProject->id }}'>
             @endif
 
-                    <input value="Add" type='submit' class="btn btn-primary">
+                    <button value="Add" type='submit' class="btn btn-primary">Add</button>
                     {{ csrf_field() }}
                 </form>
-            </div>
-            <div class="modal-footer">
-
             </div>
         </div>
     </div>
@@ -773,12 +747,32 @@ function Prioritiespill($whichone) {
     let lastChatId = 0;
     let chatRefreshInterval;
     
-    // Initialize chat refresh on page load
     document.addEventListener('DOMContentLoaded', function() {
+        var myModal = new bootstrap.Modal(document.getElementById('myModal'), {});
+        var myModal2 = new bootstrap.Modal(document.getElementById('myModal2'), {});
+        var myModal3 = new bootstrap.Modal(document.getElementById('myModal3'), {});
+        var myModal4 = new bootstrap.Modal(document.getElementById('myModal4'), {});
+        var myModal5 = new bootstrap.Modal(document.getElementById('myModal5'), {});
+
+        document.getElementById('BtnAreatoDevelop').addEventListener('click', function() {
+            myModal.show();
+        });
+        document.getElementById('BtnAddActivity').addEventListener('click', function() {
+            myModal2.show();
+        });
+        document.getElementById('BtnAddProject').addEventListener('click', function() {
+            myModal3.show();
+        });
+        document.getElementById('BtnLiveChat').addEventListener('click', function() {
+            myModal4.show();
+        });
+        document.getElementById('BtnMeetings').addEventListener('click', function() {
+            myModal5.show();
+        });
+
         initializeChatRefresh();
         setupChatForm();
         
-        // Get the last chat ID for initial load
         const chatMessages = document.querySelectorAll('[data-chat-id]');
         if (chatMessages.length > 0) {
             lastChatId = Math.max(...Array.from(chatMessages).map(el => parseInt(el.getAttribute('data-chat-id'))));
@@ -789,7 +783,6 @@ function Prioritiespill($whichone) {
         const mentorId = document.getElementById('chatMentor')?.value || '{{ $currentuser->id }}';
         const menteeId = document.getElementById('chatMentee')?.value || '{{ $mentee->id }}';
         
-        // Refresh chat every 2 seconds
         chatRefreshInterval = setInterval(function() {
             fetchChatMessages(mentorId, menteeId);
         }, 2000);
@@ -799,11 +792,9 @@ function Prioritiespill($whichone) {
         const projectId = document.getElementById('chatProjectId')?.value || '';
         let url;
         
-        // If project_id is available, use it to get all messages in the project
         if (projectId) {
             url = `/chat/messages?project_id=${projectId}`;
         } else {
-            // Fallback to mentor/mentee conversation
             url = `/chat/messages?mentor=${mentorId}&mentee=${menteeId}`;
         }
         
@@ -830,22 +821,17 @@ function Prioritiespill($whichone) {
         const chatBox = document.getElementById('chatBox');
         if (!chatBox) return;
         
-        // Get current user ID from the page
         const currentUserIsMentor = {{ $currentuser->type === 'Mentor' ? 'true' : 'false' }};
         const currentUserId = {{ $currentuser->id }};
         
-        // Get current message IDs
         const currentIds = Array.from(chatBox.querySelectorAll('[data-chat-id]'))
             .map(el => parseInt(el.getAttribute('data-chat-id')));
         
-        // Add new messages
         messages.forEach(function(message) {
             if (!currentIds.includes(message.id)) {
-                // Determine if message is from current user
                 const isCurrentUser = (currentUserIsMentor && message.mentor == currentUserId) || 
                                      (!currentUserIsMentor && message.mentee == currentUserId);
                 
-                // Get sender name
                 const senderName = currentUserIsMentor ? 
                     (message.mentor == currentUserId ? 'You' : message.mentor_name) :
                     (message.mentee == currentUserId ? 'You' : message.mentee_name);
@@ -855,7 +841,6 @@ function Prioritiespill($whichone) {
                 messageDiv.setAttribute('role', 'alert');
                 messageDiv.setAttribute('data-chat-id', message.id);
                 
-                // Format date
                 const date = new Date(message.created_at);
                 const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                 
@@ -865,7 +850,6 @@ function Prioritiespill($whichone) {
                 `;
                 chatBox.appendChild(messageDiv);
                 
-                // Scroll to bottom
                 chatBox.scrollTop = chatBox.scrollHeight;
             }
         });
@@ -893,7 +877,6 @@ function Prioritiespill($whichone) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Add message immediately to chat box
                     const chatBox = document.getElementById('chatBox');
                     if (chatBox) {
                         const messageDiv = document.createElement('div');
@@ -908,7 +891,6 @@ function Prioritiespill($whichone) {
                         chatBox.scrollTop = chatBox.scrollHeight;
                     }
                     
-                    // Clear input
                     messageInput.value = '';
                 } else {
                     alert('Error sending message');
@@ -922,6 +904,7 @@ function Prioritiespill($whichone) {
     }
     
     function escapeHtml(text) {
+        if (!text) return '';
         const map = {
             '&': '&amp;',
             '<': '&lt;',
@@ -932,7 +915,6 @@ function Prioritiespill($whichone) {
         return text.replace(/[&<>"']/g, m => map[m]);
     }
     
-    // Clean up interval when page is hidden
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
             if (chatRefreshInterval) {
