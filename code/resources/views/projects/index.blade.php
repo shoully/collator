@@ -23,7 +23,7 @@
             </div>
             @endif
             <div class="col-md-auto">
-                <a href="{{ $user->type === 'Mentor' ? route('adminDashboard') : route('userDashboard') }}" class="btn btn-secondary">
+                <a href="{{ route('dashboard') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
                 </a>
             </div>
