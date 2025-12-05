@@ -144,7 +144,7 @@
                     @if (Route::has('login'))
                         @auth
                             <li class="nav-item">
-                                <a href="{{ route('home') }}" class="nav-link">Dashboard</a>
+                                <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
                             </li>
                         @else
                             <li class="nav-item">

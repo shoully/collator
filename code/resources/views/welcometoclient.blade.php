@@ -65,7 +65,7 @@
                       @endif
                     </td>
                     <td>
-                    <form class="" action="{{ url('/homefollow', $user->id) }}" method="post">
+                    <form class="" action="{{ route('users.follow', $user->id) }}" method="post">
                                 <input type="submit" value="follow" name="follow" class="btn btn-primary float-end">
                                 <input type="hidden" name="project_id" value="{{ request()->get('project_id') }}">
                                 {{ csrf_field() }}

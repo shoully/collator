@@ -47,7 +47,7 @@
                     @if($projects->count() > 0)
                         <div class="list-group">
                             @foreach($projects as $project)
-                                <a href="{{ route('home', ['project_id' => $project->id]) }}" class="list-group-item list-group-item-action flex-column align-items-start mb-3 rounded-3 shadow-sm">
+                                <a href="{{ route('workspace', ['project_id' => $project->id]) }}" class="list-group-item list-group-item-action flex-column align-items-start mb-3 rounded-3 shadow-sm">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1">{{ $project->title }}</h5>
                                         <small>{{ $project->project_date->format('M d, Y') }}</small>

@@ -4,15 +4,15 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\MentorDashboardController;
-use App\Http\Controllers\MenteeDashboardController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\MentoringController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProjectController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,81 +26,51 @@ use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('landing');
-});
+})->name('landing');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get("/redirectAuthenticatedUsers", [RedirectAuthenticatedUsersController::class, "home"]);
 
-    Route::group(['middleware' => 'checkRole:Mentor'], function () {
-        Route::get('/adminDashboard', [MentorDashboardController::class, 'index'])->name('adminDashboard');
-    });
-    Route::group(['middleware' => 'checkRole:Mentee'], function () {
-        Route::get('/userDashboard', [MenteeDashboardController::class, 'index'])->name('userDashboard');
-    });
-    Route::group(['middleware' => 'checkRole:guest'], function () {
-        Route::get('/guestDashboard', function () {
-        return Inertia::render('GuestDashboard');
-    })->name('guestDashboard');
-    });
 });
 require __DIR__ . '/auth.php';
 
 // Protected routes - require authentication
 Route::middleware(['auth'])->group(function () {
-    // Main welcome pages
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/home2', [HomeController::class, 'listofuser'])->name('home2');
-    Route::post('/homefollow/{user}', [HomeController::class, 'fromlistofuser'])->name('home.follow');
-
-    // Mentoring routes
-    Route::post('/newmentoring', [MentoringController::class, 'store'])->name('mentoring.store');
-    Route::delete('/newmentoring/{mentoring}', [MentoringController::class, 'remove'])->name('mentoring.remove');
-
-    // Meeting routes
-    Route::post('/newmeeting', [MeetingController::class, 'store'])->name('meeting.store');
-    Route::put('/newmeeting/{meeting}', [MeetingController::class, 'updateStatus'])->name('meeting.updateStatus');
-    Route::delete('/newmeeting/{meeting}', [MeetingController::class, 'remove'])->name('meeting.remove');
-
-    // Task routes
-    Route::post('/newtask', [TaskController::class, 'store'])->name('task.store');
-    Route::delete('/newtask/{task}', [TaskController::class, 'remove'])->name('task.remove');
-    Route::put('/newtask/{task}', [TaskController::class, 'markdone'])->name('task.markdone');
-
-    // Chat routes
-    Route::post('/newchat', [ChatController::class, 'store'])->name('chat.store');
-    Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
-
-    // Document routes
-    Route::post('/documentsadd', [DocumentController::class, 'store'])->name('document.store');
-    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('document.download');
-
-    // Project routes - index and view are available to both mentors and mentees
-    // IMPORTANT: More specific routes must come before parameterized routes
-    Route::get('/projects/select', [ProjectController::class, 'select'])->name('project.select');
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    // Main workspace
+    Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace');
     
-    // Project creation (only for mentors) - must come before /projects/{project}
-    Route::middleware(['checkRole:Mentor'])->group(function () {
-        Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
-        Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-    });
-    
-    // Project view and download (available to both mentors and mentees)
-    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::get('/projects/{project}/download', [ProjectController::class, 'download'])->name('projects.download');
-    
-    // Project request to join (for mentees)
-    Route::middleware(['checkRole:Mentee'])->group(function () {
-        Route::post('/projects/{project}/request-join', [ProjectController::class, 'requestJoin'])->name('projects.requestJoin');
-    });
-    
-    // Project management (only for mentors)
-    Route::middleware(['checkRole:Mentor'])->group(function () {
-        Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
-        Route::post('/projects/{project}/update-status', [ProjectController::class, 'updateStatus'])->name('projects.updateStatus');
-    });
+    // Users
+    Route::get('/users', [WorkspaceController::class, 'users'])->name('users.index');
+    Route::post('/users/{user}/follow', [WorkspaceController::class, 'followUser'])->name('users.follow');
+
+    // Mentorings
+    Route::post('/mentorings', [MentoringController::class, 'store'])->name('mentorings.store');
+    Route::delete('/mentorings/{mentoring}', [MentoringController::class, 'destroy'])->name('mentorings.destroy');
+
+    // Meetings
+    Route::post('/meetings', [MeetingController::class, 'store'])->name('meetings.store');
+    Route::put('/meetings/{meeting}', [MeetingController::class, 'updateStatus'])->name('meetings.update');
+    Route::delete('/meetings/{meeting}', [MeetingController::class, 'destroy'])->name('meetings.destroy');
+
+    // Tasks
+    Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::put('/tasks/{task}', [TaskController::class, 'markdone'])->name('tasks.update');
+
+    // Chats
+    Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
+    Route::get('/chats/messages', [ChatController::class, 'getMessages'])->name('chats.messages');
+
+    // Documents
+    Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+
+    // Projects
+    Route::get('/projects/select', [ProjectController::class, 'select'])->name('projects.select');
+    Route::resource('projects', ProjectController::class)->except(['edit', 'update']);
+    Route::post('/projects/{project}/request-join', [ProjectController::class, 'requestJoin'])->name('projects.request-join');
+    Route::post('/projects/{project}/update-status', [ProjectController::class, 'updateStatus'])->name('projects.update-status');
+
 });

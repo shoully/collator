@@ -29,10 +29,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('adminDashboard', ['project_id' => $selectedProject->id ?? '']) }}">Dashboard</a>
+                        <a class="nav-link" href="{{ route('dashboard', ['project_id' => $selectedProject->id ?? '']) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home', ['project_id' => $selectedProject->id ?? '']) }}">Workspace</a>
+                        <a class="nav-link" href="{{ route('workspace', ['project_id' => $selectedProject->id ?? '']) }}">Workspace</a>
                     </li>
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -59,7 +59,7 @@
             </p>
             @if(isset($selectedProject))
             <div class="mt-3">
-                <a href="{{ route('project.select') }}" class="btn btn-outline-light">
+                <a href="{{ route('projects.select') }}" class="btn btn-outline-light">
                     <i class="fas fa-exchange-alt me-1"></i>Change Project
                 </a>
             </div>
@@ -117,7 +117,7 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <i class="fas fa-users me-2 text-primary"></i>
-                            <a href="{{ route('home2') }}" class="text-decoration-none">View My Mentees</a>
+                            <a href="{{ route('users.index') }}" class="text-decoration-none">View My Mentees</a>
                         </h5>
                         <p class="card-text">View and manage all your mentees. See their progress, tasks, and development areas.</p>
                     </div>
@@ -128,7 +128,7 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <i class="fas fa-briefcase me-2 text-primary"></i>
-                            <a href="{{ route('home', ['project_id' => $selectedProject->id ?? '']) }}" class="text-decoration-none">My Workspace</a>
+                            <a href="{{ route('workspace', ['project_id' => $selectedProject->id ?? '']) }}" class="text-decoration-none">My Workspace</a>
                         </h5>
                         <p class="card-text">Access your main workspace to create tasks, manage mentorings, and view documents.</p>
                     </div>

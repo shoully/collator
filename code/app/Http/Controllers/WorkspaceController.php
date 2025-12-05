@@ -13,7 +13,7 @@ use App\Models\Chat;
 use App\Models\Meeting;
 use App\Models\Project;
 
-class HomeController extends Controller
+class WorkspaceController extends Controller
 {
   public function index(Request $request)
   {
@@ -75,7 +75,7 @@ class HomeController extends Controller
 
     // REQUIRE project selection - redirect to project selection if no project selected
     if (!$selectedProject) {
-      return redirect()->route('project.select')
+      return redirect()->route('projects.select')
           ->with('info', 'Please select a project to access the workspace.');
     }
 
@@ -246,7 +246,7 @@ class HomeController extends Controller
 
     // REQUIRE project selection - redirect to project selection if no project selected
     if (!$selectedProject) {
-      return redirect()->route('project.select')
+      return redirect()->route('projects.select')
           ->with('info', 'Please select a project to access the workspace.');
     }
 
@@ -418,7 +418,7 @@ class HomeController extends Controller
 
     // REQUIRE project selection - redirect to project selection if no project selected
     if (!$selectedProject) {
-      return redirect()->route('project.select')
+      return redirect()->route('projects.select')
           ->with('info', 'Please select a project to access the workspace.');
     }
 

@@ -31,12 +31,12 @@ function Prioritiespill($whichone) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ $currentuser->type === 'Mentor' ? route('adminDashboard', ['project_id' => $selectedProject->id ?? '']) : route('userDashboard', ['project_id' => $selectedProject->id ?? '']) }}">
+                        <a class="nav-link" href="{{ route('dashboard', ['project_id' => $selectedProject->id ?? '']) }}">
                             <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('project.select') }}">
+                        <a class="nav-link" href="{{ route('projects.select') }}">
                             <i class="fas fa-exchange-alt me-1"></i>Change Project
                         </a>
                     </li>
@@ -77,7 +77,7 @@ function Prioritiespill($whichone) {
                 </div>
                 <div>
                     @if(isset($projects) && $projects->count() > 0)
-                        <form method="GET" action="{{ route('home') }}" class="d-inline">
+                        <form method="GET" action="{{ route('workspace') }}" class="d-inline">
                             <select name="project_id" class="form-select" onchange="this.form.submit()">
                                 <option value="">Select a Project</option>
                                 @foreach($projects as $project)
@@ -139,13 +139,13 @@ function Prioritiespill($whichone) {
                                 @endif
                             </div>
                             @if ($currentuser->type == "Mentor")
-                                <form class="ms-2" action="{{ url('/newmentoring', $mentoring->id) }}" method="post">
+                                <form class="ms-2" action="{{ route('mentorings.destroy', $mentoring->id) }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="mentee" value="{{ $mentoring->mentee ?? $mentee->id }}">
                                     <input type="hidden" name="mentor" value="{{ $currentuser->id }}">
                                     <button type="submit" name="x" class="btn btn-danger btn-sm">
                                         <i class="fas fa-times"></i>
                                     </button>
-                                    {{ method_field('DELETE') }}
                                     {{ csrf_field() }}
                                 </form>
                             @endif
@@ -208,7 +208,8 @@ function Prioritiespill($whichone) {
                             </div>
                             <div class="ms-2">
                                 @if($task->status != "Done" && $currentuser->type == "Mentee" && $task->mentee == $currentuser->id)
-                                    <form class="d-inline" action="{{ url('/newtask', $task->id) }}" method="post">
+                                    <form class="d-inline" action="{{ route('tasks.update', $task->id) }}" method="post">
+                                        <input type="hidden" name="_method" value="PUT">
                                         <input type="hidden" name="mentee" value="{{ $task->mentee }}">
                                         <input type="hidden" name="mentor" value="{{ $task->mentor }}">
                                         @if(isset($selectedProject) && $selectedProject)
@@ -217,12 +218,12 @@ function Prioritiespill($whichone) {
                                         <button type="submit" name="Done" class="btn btn-warning btn-sm">
                                             <i class="fas fa-check me-1"></i>Mark Done
                                         </button>
-                                        {{ method_field('put') }}
                                         {{ csrf_field() }}
                                     </form>
                                 @endif
                                 @if ($currentuser->type == "Mentor" && $task->mentor == $currentuser->id)
-                                    <form class="d-inline" action="{{ url('/newtask', $task->id) }}" method="post">
+                                    <form class="d-inline" action="{{ route('tasks.destroy', $task->id) }}" method="post">
+                                        <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="mentee" value="{{ $task->mentee }}">
                                         <input type="hidden" name="mentor" value="{{ $currentuser->id }}">
                                         @if(isset($selectedProject) && $selectedProject)
@@ -231,7 +232,6 @@ function Prioritiespill($whichone) {
                                         <button type="submit" name="x" class="btn btn-danger btn-sm" title="Delete task">
                                             <i class="fas fa-times"></i>
                                         </button>
-                                        {{ method_field('DELETE') }}
                                         {{ csrf_field() }}
                                     </form>
                                 @endif
@@ -261,7 +261,7 @@ function Prioritiespill($whichone) {
                 <li class="list-group-item">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <a href="{{ route('document.download', $document) }}" class="text-decoration-none">
+                            <a href="{{ route('documents.download', $document) }}" class="text-decoration-none">
                                 <i class="fas fa-file me-1"></i>{{ $document->filename }}
                             </a>
                             @if($currentuser->type == "Mentor" && $document->menteeUser)
@@ -407,8 +407,8 @@ function Prioritiespill($whichone) {
                         <div class="card-footer bg-transparent border-primary">
                             <div class="d-flex gap-2 justify-content-center flex-wrap">
                                 @if($meetingrequest->status != 'ongoing')
-                                <form action="{{ url('/newmeeting', $meetingrequest->id) }}" method="post" class="d-inline">
-                                    {{ method_field('PUT') }}
+                                <form action="{{ route('meetings.update', $meetingrequest->id) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="PUT">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="status" value="ongoing">
                                     <input type="hidden" name="mentee" value="{{ $mentee->id }}">
@@ -421,8 +421,8 @@ function Prioritiespill($whichone) {
                                 @endif
                                 
                                 @if($meetingrequest->status != 'declined')
-                                <form action="{{ url('/newmeeting', $meetingrequest->id) }}" method="post" class="d-inline">
-                                    {{ method_field('PUT') }}
+                                <form action="{{ route('meetings.update', $meetingrequest->id) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="PUT">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="status" value="declined">
                                     <input type="hidden" name="mentee" value="{{ $mentee->id }}">
@@ -435,8 +435,8 @@ function Prioritiespill($whichone) {
                                 @endif
                                 
                                 @if($meetingrequest->status != 'done')
-                                <form action="{{ url('/newmeeting', $meetingrequest->id) }}" method="post" class="d-inline">
-                                    {{ method_field('PUT') }}
+                                <form action="{{ route('meetings.update', $meetingrequest->id) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="PUT">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="status" value="done">
                                     <input type="hidden" name="mentee" value="{{ $mentee->id }}">
@@ -448,8 +448,8 @@ function Prioritiespill($whichone) {
                                 </form>
                                 @endif
                                 
-                                <form action="{{ url('/newmeeting', $meetingrequest->id) }}" method="post" class="d-inline">
-                                    {{ method_field('DELETE') }}
+                                <form action="{{ route('meetings.destroy', $meetingrequest->id) }}" method="post" class="d-inline">
+                                    <input type="hidden" name="_method" value="DELETE">
                                     {{ csrf_field() }}
                                     <input type="hidden" name="mentee" value="{{ $mentee->id }}">
                                     <input type="hidden" name="mentor" value="{{ $currentuser->id }}">
@@ -487,7 +487,7 @@ function Prioritiespill($whichone) {
         <div class="modal-body">
             <form
             class="form-horizontal"
-            action="{{ url('/newmentoring') }}"
+            action="{{ route('mentorings.store') }}"
             method="post"
             role="form">
             <div class="mb-3">
@@ -516,7 +516,7 @@ function Prioritiespill($whichone) {
         <div class="modal-body">
             <form
             class="form-horizontal"
-            action="{{ url('/newtask') }}"
+            action="{{ route('tasks.store') }}"
             method="post"
             role="form">
             <div class="mb-3">
@@ -638,7 +638,7 @@ function Prioritiespill($whichone) {
         </div>
         <div class="modal-body">
 
-        <form  id="upload-file" action="{{ url('/documentsadd') }}" method="post" enctype="multipart/form-data">
+        <form  id="upload-file" action="{{ route('documents.store') }}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="doc_title" class="form-label">Title</label>
             <input type='text' class='form-control' placeholder='Enter title' name='title' id="doc_title">
@@ -679,7 +679,7 @@ function Prioritiespill($whichone) {
             <form
             class="form-horizontal"
             id="chatForm"
-            action="{{ url('/newchat') }}"
+            action="{{ route('chats.store') }}"
             method="post"
             role="form">
                 
@@ -706,7 +706,7 @@ function Prioritiespill($whichone) {
                 <div class="modal-body">
                     <form
                     class="form-horizontal"
-                    action="{{ url('/newmeeting') }}"
+                    action="{{ route('meetings.store') }}"
                     method="post"
                     role="form">
                    <div class="mb-3">
