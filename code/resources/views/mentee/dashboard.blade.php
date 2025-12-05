@@ -32,7 +32,7 @@
                         <a class="nav-link" href="{{ route('dashboard', ['project_id' => $selectedProject->id ?? '']) }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('workspace', ['project_id' => $selectedProject->id ?? '']) }}">Workspace</a>
+                        <a class="nav-link" href="{{ route('workspace', $selectedProject) }}">Workspace</a>
                     </li>
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
@@ -130,7 +130,7 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <i class="fas fa-briefcase me-2 text-primary"></i>
-                            <a href="{{ route('workspace', ['project_id' => $selectedProject->id ?? '']) }}" class="text-decoration-none">My Workspace</a>
+                            <a href="{{ route('workspace', $selectedProject) }}" class="text-decoration-none">My Workspace</a>
                         </h5>
                         <p class="card-text">Access your main workspace to view tasks, development areas, documents, and chat with your mentors.</p>
                     </div>
@@ -152,7 +152,7 @@
                     <div class="card-body">
                         <h5 class="card-title">
                             <i class="fas fa-tasks me-2 text-primary"></i>
-                            <a href="{{ route('workspace', ['project_id' => $selectedProject->id ?? '']) }}" class="text-decoration-none">View My Tasks</a>
+                            <a href="{{ route('workspace', $selectedProject) }}" class="text-decoration-none">View My Tasks</a>
                         </h5>
                         <p class="card-text">See all your tasks, track progress, and mark tasks as completed.</p>
                     </div>

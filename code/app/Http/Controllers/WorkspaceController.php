@@ -15,7 +15,7 @@ use App\Models\Project;
 
 class WorkspaceController extends Controller
 {
-  public function index(Request $request)
+  public function index(Request $request, Project $project)
   {
     $userloginedin = Auth::user();
 
@@ -25,9 +25,6 @@ class WorkspaceController extends Controller
 
     // Use the logged-in user as the mentee
     $mentee = $userloginedin;
-
-    // Get selected project ID from request
-    $projectId = $request->get('project_id');
 
     // Get all projects available to this user
     if ($userloginedin->type === 'Mentor') {
@@ -55,23 +52,21 @@ class WorkspaceController extends Controller
       $availableProjects = $assignedProjects->merge($availableProjectsFromMentors)->sortByDesc('project_date')->values();
     }
 
-    // Get selected project
-    $selectedProject = null;
-    if ($projectId) {
-      $selectedProject = Project::find($projectId);
-      // Verify user has access to this project
-      if ($selectedProject) {
+    $selectedProject = $project;
+    
+    // Verify user has access to this project
+    if ($selectedProject) {
         if ($userloginedin->type === 'Mentor' && $selectedProject->owner != $userloginedin->id) {
-          $selectedProject = null;
-        } elseif ($userloginedin->type === 'Mentee' && $selectedProject->mentee != $mentee->id && $selectedProject->mentee != null) {
-          // Check if it's from their mentor
-          $mentorIds = Mentoring::where('mentee', $mentee->id)->pluck('mentor')->toArray();
-          if (!in_array($selectedProject->owner, $mentorIds) && $selectedProject->mentee != null) {
             $selectedProject = null;
-          }
+        } elseif ($userloginedin->type === 'Mentee' && $selectedProject->mentee != $mentee->id && $selectedProject->mentee != null) {
+            // Check if it's from their mentor
+            $mentorIds = Mentoring::where('mentee', $mentee->id)->pluck('mentor')->toArray();
+            if (!in_array($selectedProject->owner, $mentorIds) && $selectedProject->mentee != null) {
+                $selectedProject = null;
+            }
         }
-      }
     }
+
 
     // REQUIRE project selection - redirect to project selection if no project selected
     if (!$selectedProject) {

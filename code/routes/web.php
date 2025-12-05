@@ -39,7 +39,7 @@ require __DIR__ . '/auth.php';
 // Protected routes - require authentication
 Route::middleware(['auth'])->group(function () {
     // Main workspace
-    Route::get('/workspace', [WorkspaceController::class, 'index'])->name('workspace');
+    Route::get('/projects/{project}/workspace', [WorkspaceController::class, 'index'])->name('workspace');
     
     // Users
     Route::get('/users', [WorkspaceController::class, 'users'])->name('users.index');
