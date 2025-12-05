@@ -87,7 +87,7 @@
                                             <span class="badge bg-danger">Cancelled</span>
                                         @endif
                                         @if($user->id == $project->owner)
-                                            <form method="POST" action="{{ route('projects.updateStatus', $project) }}" class="d-inline float-end">
+                                            <form method="POST" action="{{ route('projects.update-status', $project) }}" class="d-inline float-end">
                                                 @csrf
                                                 <select name="status" class="form-select form-select-sm" style="width: auto; display: inline-block;" onchange="this.form.submit()">
                                                     <option value="active" {{ $project->status === 'active' ? 'selected' : '' }}>Active</option>
