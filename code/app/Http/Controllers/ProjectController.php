@@ -53,7 +53,7 @@ class ProjectController extends Controller
             abort(403, 'Only mentors and mentees can access projects');
         }
 
-        return view('projects.select', [
+        return \Inertia\Inertia::render('Projects/Index', [
             'projects' => $projects,
             'user' => $user,
         ]);
@@ -106,7 +106,7 @@ class ProjectController extends Controller
             abort(403, 'Only mentors and mentees can view projects');
         }
 
-        return view('projects.index', [
+        return \Inertia\Inertia::render('Projects/Index', [
             'projects' => $projects,
             'user' => $user,
         ]);
@@ -129,7 +129,7 @@ class ProjectController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('projects.create', [
+        return \Inertia\Inertia::render('Projects/Create', [
             'mentees' => $mentees,
             'user' => $user,
         ]);
@@ -204,7 +204,7 @@ class ProjectController extends Controller
             $successMessage .= ' ' . $menteeName . ' has been assigned and a mentoring relationship has been established.';
         }
 
-        return redirect()->route('projects.index')
+        return redirect()->route('Projects/Index')
             ->with('success', $successMessage);
     }
 
@@ -237,7 +237,7 @@ class ProjectController extends Controller
             abort(403, 'You can only view projects you own, are assigned to, or available from your mentors');
         }
 
-        return view('projects.show', [
+        return \Inertia\Inertia::render('Projects/Show', [
             'project' => $project,
             'user' => $user,
         ]);
@@ -281,7 +281,7 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect()->route('projects.index')
+        return redirect()->route('Projects/Index')
             ->with('success', 'Project deleted successfully!');
     }
 

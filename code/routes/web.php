@@ -30,6 +30,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/action-plan', [\App\Http\Controllers\ActionPlanController::class, 'index'])->name('action-plan.index');
+    Route::get('/communications', [\App\Http\Controllers\CommunicationController::class, 'index'])->name('communications.index');
 
     Route::get("/redirectAuthenticatedUsers", [RedirectAuthenticatedUsersController::class, "home"]);
 

@@ -11,13 +11,26 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: '#4285F4',
-                secondary: '#34A853',
-                accent: '#FBBC05',
-                error: '#EA4335',
+                brand: {
+                    50: '#eff6ff',
+                    100: '#dbeafe',
+                    500: '#3b82f6', // Trust Blue (Primary)
+                    600: '#2563eb',
+                    700: '#1d4ed8',
+                    900: '#1e3a8a',
+                },
+                growth: {
+                    50: '#f0fdf4',
+                    100: '#dcfce7',
+                    500: '#22c55e', // Growth Green (Accent)
+                    600: '#16a34a',
+                },
+                warning: {
+                    500: '#f59e0b', // Amber/Alerts
+                }
             },
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
     },
